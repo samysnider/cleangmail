@@ -1,10 +1,10 @@
-# Clean Gmail
+# Gmail Zen
 
-A quieter, monochrome Gmail. Clean Gmail is a small Chrome extension that restyles Gmail in your browser: fewer buttons, warm greys, generous space and a single touch of orange. It doesn't touch your email, your account or any server. Everything happens in the page you're looking at.
+A quieter, monochrome Gmail. Gmail Zen is a small Chrome extension that restyles Gmail in your browser: fewer buttons, warm greys, generous space and a single touch of orange. It doesn't touch your email, your account or any server. Everything happens in the page you're looking at.
 
 It's a personal project, built to make Gmail feel calm and focused.
 
-![Clean Gmail: the inbox, then writing and sending a message](media/demo.gif)
+![Gmail Zen: the inbox, then writing and sending a message](media/demo.gif)
 
 *Demo recreated with invented emails.*
 

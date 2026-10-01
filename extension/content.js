@@ -1,4 +1,4 @@
-// Clean Gmail: the two things CSS can't do on its own.
+// Gmail Zen: the two things CSS can't do on its own.
 //
 // 1. Unread dot next to the "Non lus" heading. Reads the unread count Gmail
 //    puts in the tab title ("Boîte de réception (3)") and shows it as an
