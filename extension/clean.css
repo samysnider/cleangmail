@@ -48,6 +48,7 @@
   --cg-hairline: #e9e9e7;  /* compose field dividers, outlines */
   /* Sheet curve: no bounce, quick start, long soft landing */
   --cg-ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --cg-ease-ui: cubic-bezier(0.2, 0, 0, 1); /* hovers, presses and other quick state changes */
   --cg-font: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
 }
 
@@ -357,8 +358,9 @@ tr.zA > td.apU {
   [role="navigation"] .TO {
     transition:
       opacity 200ms ease,
-      box-shadow 150ms ease,
-      background-color 150ms ease;
+      box-shadow 150ms var(--cg-ease-ui),
+      background-color 150ms var(--cg-ease-ui),
+      scale 150ms var(--cg-ease-ui);
   }
 
   [role="banner"] .gb_ad[role="button"] svg path {
@@ -366,14 +368,14 @@ tr.zA > td.apU {
   }
 
   [role="banner"] .gb_ad[role="button"] svg {
-    transition: opacity 264ms ease;
+    transition: opacity 150ms var(--cg-ease-ui);
   }
 
   /* Opening: entries appear top to bottom, 25ms apart (the delay applies
      to the fade only, not to the hover shadow) */
-  [role="navigation"]:not(.bhZ) .aim:has(a[href$="#inbox"]) .TO { transition-delay: 75ms, 0s, 0s; }
-  [role="navigation"]:not(.bhZ) .aim:has(a[href$="#starred"]) .TO { transition-delay: 100ms, 0s, 0s; }
-  [role="navigation"]:not(.bhZ) .aim:has(a[href$="#sent"]) .TO { transition-delay: 125ms, 0s, 0s; }
+  [role="navigation"]:not(.bhZ) .aim:has(a[href$="#inbox"]) .TO { transition-delay: 75ms, 0s, 0s, 0s; }
+  [role="navigation"]:not(.bhZ) .aim:has(a[href$="#starred"]) .TO { transition-delay: 100ms, 0s, 0s, 0s; }
+  [role="navigation"]:not(.bhZ) .aim:has(a[href$="#sent"]) .TO { transition-delay: 125ms, 0s, 0s, 0s; }
 }
 
 /* Compose: floating pill with the word "Écrire", bottom right. Gmail's own
@@ -394,7 +396,7 @@ tr.zA > td.apU {
   border-radius: calc(var(--cg-compose-size) / 2) !important;
   font-size: 0 !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-  transition: box-shadow 150ms ease !important;
+  transition: box-shadow 150ms var(--cg-ease-ui), scale 150ms var(--cg-ease-ui) !important;
 }
 
 .T-I.T-I-KE.L3:hover {
@@ -673,7 +675,7 @@ body:has(.dw .Hd[role="dialog"])::before {
   border-radius: 50% !important;
   background-color: var(--cg-active) !important;
   pointer-events: auto !important;
-  transition: background-color 150ms ease;
+  transition: background-color 150ms var(--cg-ease-ui), scale 150ms var(--cg-ease-ui);
 }
 
 .dw .Hd[role="dialog"] .aXJ button:last-child:hover {
@@ -737,7 +739,7 @@ body:has(.dw .Hd[role="dialog"])::before {
 .dw .Hd[role="dialog"] .aDj .J-Z-M-I,
 .dw .Hd[role="dialog"] .aDj .J-JN-M-I {
   opacity: 0.6;
-  transition: opacity 150ms ease, background-color 150ms ease;
+  transition: opacity 150ms var(--cg-ease-ui), background-color 150ms var(--cg-ease-ui);
 }
 
 .dw .Hd[role="dialog"] .aDj .J-Z-I:hover,
@@ -816,7 +818,7 @@ body:has(.dw .Hd[role="dialog"])::before {
 .dw .Hd[role="dialog"] .dC {
   border-radius: 22px;
   box-shadow: 0 0 0 0 transparent;
-  transition: box-shadow 400ms var(--cg-ease-sheet);
+  transition: box-shadow 400ms var(--cg-ease-sheet), scale 150ms var(--cg-ease-ui);
 }
 
 .dw .Hd[role="dialog"] .dC:hover {
@@ -849,7 +851,9 @@ body:has(.dw .Hd[role="dialog"])::before {
 .dw .Hd[role="dialog"] .T-I.aoO {
   flex: 1 1 auto !important;
   max-width: none !important; /* Gmail caps it at 104px */
-  padding: 0 28px !important;
+  /* The extra 33px on the left (the arrow's width) centers "Envoyer" on the
+     whole pill rather than on the orange part only */
+  padding: 0 28px 0 calc(28px + 33px) !important;
   border-radius: 22px 0 0 22px !important;
 }
 
@@ -1044,7 +1048,7 @@ body:has([role="main"] h2.hP) [role="main"] {
   border-radius: 50% !important;
   background-color: var(--cg-active) !important;
   box-shadow: none !important;
-  transition: background-color 150ms ease;
+  transition: background-color 150ms var(--cg-ease-ui), scale 150ms var(--cg-ease-ui);
 }
 
 [gh="tm"] .T-I.lS:hover {
@@ -1100,7 +1104,7 @@ body:has([role="main"] h2.hP) [role="main"] {
   font-size: 14px !important;
   font-weight: 500 !important;
   border-color: var(--cg-hairline) !important;
-  transition: background-color 150ms ease;
+  transition: background-color 150ms var(--cg-ease-ui), scale 150ms var(--cg-ease-ui);
 }
 
 [role="main"] .ams:hover {
@@ -1109,6 +1113,27 @@ body:has([role="main"] h2.hP) [role="main"] {
 
 [role="main"] .ams::before {
   opacity: 0.6;
+}
+
+/* ---------- Press feedback and image edges ---------- */
+
+/* Buttons shrink slightly while pressed (scale 0.96), so a click is felt
+   before Gmail responds */
+.T-I.T-I-KE.L3:active,
+.dw .Hd[role="dialog"] .dC:active,
+.dw .Hd[role="dialog"] .aXJ button:last-child:active,
+[gh="tm"] .T-I.lS:active,
+[role="navigation"] .TO:active,
+[role="main"] .ams:active {
+  scale: 0.96;
+}
+
+/* Images in an email and the sender's photo get a faint 1px edge, so light
+   pictures don't melt into the page (emoji images excluded) */
+[role="main"] .a3s img:not(.an1),
+[role="main"] img.ajn {
+  outline: 1px solid oklch(0 0 0 / 0.1);
+  outline-offset: -1px;
 }
 
 /* ---------- Monochrome ---------- */
@@ -1130,7 +1155,7 @@ tr.zA {
   box-shadow: 0 0 0 0 transparent !important;
   transition-property: background-color, box-shadow !important;
   transition-duration: 150ms !important;
-  transition-timing-function: cubic-bezier(0.2, 0, 0, 1) !important;
+  transition-timing-function: var(--cg-ease-ui) !important;
 }
 
 [role="banner"] form[role="search"]:focus-within {
