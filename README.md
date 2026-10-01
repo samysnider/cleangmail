@@ -4,6 +4,10 @@ A quieter, monochrome Gmail. Clean Gmail is a small Chrome extension that restyl
 
 It's a personal project, built to make Gmail feel calm and focused.
 
+![Clean Gmail: the inbox, then writing and sending a message](media/demo.gif)
+
+*Demo recreated with invented emails.*
+
 ## What it changes
 
 **Inbox**
