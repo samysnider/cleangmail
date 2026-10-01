@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Clean Gmail",
+  "version": "0.1.0",
+  "description": "A quieter, monochrome Gmail.",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*"
+      ],
+      "css": [
+        "clean.css"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://mail.google.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

@@ -1,0 +1,1221 @@
+/*
+ * Clean Gmail
+ *
+ * Gmail's class names (like .gb_Md or .T-I) are auto-generated and can change
+ * when Google ships an update. If something reappears, the selector below it
+ * probably needs updating.
+ *
+ * Typography: Inter, few sizes, hierarchy from weight (600 headings, 500
+ * unread, 400 the rest). Colors: a warm gray scale and one orange accent.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --cg-bg: #fdfdfc;        /* every page background */
+  --cg-hover: #f5f4f4;     /* row and button hover */
+  --cg-active: #f1f0ef;    /* search bar, selected nav item, selected rows */
+  --cg-text-muted: #63635e; /* snippets, dates */
+  --cg-text-subtle: #82827c; /* quiet labels in the compose tools */
+  --cg-text: #21201c;      /* primary text */
+  --cg-accent: #ff670d;    /* orange: unread dot and compose buttons */
+  --cg-unread-gap: 8px;    /* "Non lus" to dot, and dot to count */
+  --cg-compose-size: 44px; /* compose button height; 44px is the minimum comfortable click target */
+  --cg-radius: 8px;        /* search bar */
+  --cg-search-width: 336px; /* fits the placeholder plus the space Gmail keeps for its clear button */
+  --cg-inset: 12px;        /* left edge of row text and section headings */
+  --cg-content-width: 1080px;
+  --cg-header-top: 24px;   /* space above the search bar */
+  --cg-header-row: 64px;   /* Gmail's header row height */
+  --cg-list-top: 32px;     /* space between header and "Non lus" */
+  --cg-hamburger-left: 12px; /* hamburger button from the window's left edge */
+  --cg-band-fade: 24px;    /* reading an email: soft edge under the toolbar band */
+  --cg-hamburger-top: calc(var(--cg-header-top) + var(--cg-header-row) + var(--cg-list-top) + 12px - 24px); /* level with "Non lus" */
+  --cg-menu-width: 48px;   /* open menu: a pill as wide as the hamburger */
+  --cg-menu-height: 176px; /* 52px under the hamburger + 3 icons of 40px + 4px */
+  /* Spring curves for the menu: a soft one and a bouncier one */
+  --cg-spring-soft: linear(0, 0.0089 2.95%, 0.0349 5.91%, 0.1366 11.81%, 0.2941 17.72%, 0.4884 23.62%, 0.685 29.53%, 0.8503 35.43%, 0.9683 41.34%, 1.0223 47.24%, 1.0402 53.15%, 1.0428 59.05%, 1.0366 64.96%, 1.0269 70.86%, 1.0174 76.77%, 1.0097 82.67%, 1.0046 88.58%, 1.0015 94.48%, 1);
+  --cg-spring-bouncy: linear(0, 0.0238 4.43%, 0.0917 8.86%, 0.3441 17.71%, 0.6533 26.57%, 0.9054 35.43%, 1.0638 41.51%, 1.1471 47.59%, 1.1629 50.92%, 1.1595 54.43%, 1.1389 60.69%, 1.0914 67.69%, 1.0452 73.96%, 1.0135 80.22%, 0.9975 87.04%, 0.9953 93.85%, 1);
+  --cg-scrollbar: 16px;    /* Gmail always reserves this beside the list */
+  --cg-row-padding: 8px;   /* above and below each email; rows are 20px of text + 2x this (Gmail default is 10px, so 40px rows) */
+  --cg-heading-gap: 16px;  /* under section headings; with line heights, ~28px of visible space */
+  --cg-section-gap: 48px;  /* between "Non lus" and "Autres messages" */
+  --cg-fade-height: 280px; /* bottom fade over the oldest messages */
+  --cg-compose-column: 720px; /* compose: width of the centered writing column */
+  --cg-compose-top: 64px;  /* compose: space above the recipients */
+  --cg-tools-row: 64px;    /* compose: the row with the tools and Send */
+  --cg-send-gap: 32px;     /* compose: space between the last tool and Send */
+  --cg-hairline: #e9e9e7;  /* compose field dividers, outlines */
+  /* Sheet curve: no bounce, quick start, long soft landing */
+  --cg-ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --cg-font: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+}
+
+/* ---------- Hidden ---------- */
+
+/* Gmail logo */
+[role="banner"] a.gb_me {
+  display: none !important;
+}
+
+/* Help, settings, Gemini, upgrade button */
+[role="banner"] .gb_v.gb_Ae {
+  display: none !important;
+}
+
+/* Google apps grid and account avatar */
+[role="banner"] .gb_Md {
+  display: none !important;
+}
+
+/* Right side panel (Calendar, Keep, Tasks, Contacts, add-ons) */
+.bAw:has([role="complementary"]) {
+  display: none !important;
+}
+
+/* Left navigation: Snoozed, Important, Drafts, Purchases.
+   Matched by link address, which doesn't change with the interface language. */
+[role="navigation"] .TO:has(a[href$="#snoozed"]),
+[role="navigation"] .TO:has(a[href$="#imp"]),
+[role="navigation"] .TO:has(a[href$="#drafts"]),
+[role="navigation"] .TO:has(a[href*="purchases"]) {
+  display: none !important;
+}
+
+/* Left navigation: "More" and its chevron */
+[role="navigation"] .wT > .n6 {
+  display: none !important;
+}
+
+/* Left navigation: the whole Labels section (heading and list) */
+[role="navigation"] .aAw,
+[role="navigation"] .aAw ~ .yJ {
+  display: none !important;
+}
+
+/* Inbox, second section ("Other messages"): read messages only. Unread ones
+   already appear in the first section. */
+[role="main"] .ae4 ~ .ae4 tr.zA.zE {
+  display: none !important;
+}
+
+/* Inbox section counters ("1–3 sur 3", "1–50 sur 43 281") */
+[role="main"] .ae4 .Wg .Di {
+  display: none !important;
+}
+
+/* Footer under the list: storage, terms, privacy, last account activity */
+.aeG {
+  display: none !important;
+}
+
+/* Search: advanced options button inside the search bar */
+[role="banner"] form[role="search"] button.gb_4e {
+  display: none !important;
+}
+
+/* Message list: labels before the subject ("Notifications", "Promotions") */
+tr.zA .yi {
+  display: none !important;
+}
+
+/* Message list: checkboxes and stars */
+tr.zA > td.oZ-x3,
+tr.zA > td.apU {
+  display: none !important;
+}
+
+/* List toolbar (select all, refresh, more). Comes back when a message is
+   selected with the keyboard (x), so archive and delete stay reachable. */
+[role="main"]:not(:has(tr.zA.x7)) [gh="tm"] {
+  display: none !important;
+}
+
+/* ---------- Layout ---------- */
+
+/* Header: no divider, extra room above. Its row uses the same centered
+   column as the list (the right padding mirrors the list's scrollbar), so
+   the search sits over the list's center. */
+[role="banner"] {
+  padding-top: var(--cg-header-top) !important;
+  padding-right: var(--cg-scrollbar) !important;
+  box-sizing: border-box !important;
+}
+
+[role="banner"] .gb_Td {
+  max-width: var(--cg-content-width) !important;
+  margin: 0 auto !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Hamburger: pinned near the window's left edge (where Gmail had it),
+   level with "Non lus". Vertical: space above the header + header row +
+   list top space + half the heading's line height, minus half the 48px button. */
+[role="banner"] .gb_ad[role="button"] {
+  position: fixed !important;
+  top: var(--cg-hamburger-top) !important;
+  left: var(--cg-hamburger-left) !important;
+  margin: 0 !important;
+}
+
+[role="banner"] .gb_2d.gb_Ad,
+[role="banner"] .gb_be {
+  flex: 0 0 64px !important;
+  width: 64px !important;
+  min-width: 64px !important;
+}
+
+/* Gmail pads the search area unevenly (10px left, 30px right) */
+[role="banner"] .gb_Te {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+[role="banner"] form[role="search"] {
+  margin: 0 auto !important;
+  max-width: var(--cg-search-width) !important;
+  border-radius: var(--cg-radius) !important;
+}
+
+/* Stacking, top to bottom: Gmail's header (6), the menu with the floating
+   compose button (5), the bottom fade (4), the progressive blur (3), the
+   list. Without this the list would sit over the compose button. */
+[role="navigation"] {
+  z-index: 5 !important;
+}
+
+/* Menu as a floating card. Closed, it's an invisible
+   48px circle under the hamburger; open (Gmail drops .bhZ), it grows into a
+   pill of icons with a springy height, lifts with a shadow, and its entries
+   fade in one after another. It floats over the margin, so the list never
+   moves. Gmail only flips the class; every motion here is CSS. */
+[role="navigation"] {
+  position: fixed !important;
+  top: var(--cg-hamburger-top) !important;
+  left: var(--cg-hamburger-left) !important;
+  width: 48px !important;
+  min-width: 0 !important;
+  height: 48px !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+  background-color: transparent !important;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+[role="navigation"]:not(.bhZ) {
+  width: var(--cg-menu-width) !important;
+  height: var(--cg-menu-height) !important;
+  background-color: var(--cg-bg) !important;
+  box-shadow: 0 14px 60px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.04);
+  pointer-events: auto;
+}
+
+/* The compose button lives inside the menu but floats on its own */
+[role="navigation"] .T-I.T-I-KE.L3 {
+  pointer-events: auto !important;
+}
+
+/* The list keeps its full width whether the menu is open or not */
+.bkK {
+  margin-left: 0 !important;
+}
+
+/* Inside the card: drop the compose slot and the footer, leave room under
+   the hamburger, and let the entries size to the card */
+[role="navigation"] .aic {
+  height: 0 !important;
+}
+
+[role="navigation"] .I6agWe {
+  display: none !important;
+}
+
+[role="navigation"] .V3 {
+  height: auto !important;
+  padding: 52px 4px 4px !important;
+  overflow: visible !important;
+}
+
+/* Once open, the card stops clipping its contents, so the entries' hover
+   shadow isn't cut. The switch waits until the card has finished growing
+   (see the transitions below) and flips back instantly on close. */
+[role="navigation"]:not(.bhZ) {
+  overflow: visible !important;
+}
+
+/* Gmail's list wrapper clips to the 40px icon column, which cut the hover
+   shadow into a straight-edged band */
+[role="navigation"] .ajl {
+  overflow: visible !important;
+}
+
+[role="navigation"] .wT,
+[role="navigation"] .TK,
+[role="navigation"] .TO,
+[role="navigation"] .TN {
+  width: auto !important;
+  min-width: 0 !important; /* Gmail forces the list to 240px */
+}
+
+[role="navigation"] .yJ {
+  margin-bottom: 0 !important;
+}
+
+/* Entries: icons only, as 40px circles. The name still shows in Gmail's
+   hover tooltip and is read by screen readers; the link is stretched over
+   the whole circle so the icon is what you click. */
+[role="navigation"] .TO {
+  position: relative !important;
+  height: 40px !important;
+  border-radius: 20px !important;
+  opacity: 0;
+}
+
+/* Hover: the circle lifts like the "Écrire" button, same shadow */
+[role="navigation"] .TO:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16), 0 8px 20px rgba(0, 0, 0, 0.10) !important;
+}
+
+[role="navigation"] .TO:not(.nZ):hover {
+  background-color: var(--cg-bg) !important;
+}
+
+[role="navigation"] .TN {
+  height: 40px !important;
+  padding: 0 !important;
+  justify-content: center !important;
+}
+
+[role="navigation"] .TO .qj {
+  display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
+  margin: auto !important; /* centered in its circle */
+  filter: grayscale(1);
+}
+
+[role="navigation"] .TO .aio {
+  position: static !important;
+  width: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+[role="navigation"] .TO a.J-Ke {
+  position: absolute !important;
+  inset: 0 !important;
+  font-size: 0 !important;
+}
+
+[role="navigation"] .TO .bsU {
+  display: none !important;
+}
+
+[role="navigation"]:not(.bhZ) .TO {
+  opacity: 1;
+}
+
+/* Hamburger morphs into a close icon when the menu opens: the top and bottom
+   bars rotate into an X and the middle one shrinks away. Both shapes are
+   three 4-corner bars on Gmail's 24px grid, so the browser can blend one
+   into the other. It also dims a little while the menu is open. */
+[role="banner"] .gb_ad[role="button"] svg path {
+  d: path("M3 6 L21 6 L21 8 L3 8 Z M3 11 L21 11 L21 13 L3 13 Z M3 16 L21 16 L21 18 L3 18 Z");
+}
+
+[role="banner"] .gb_ad[aria-expanded="true"] svg path {
+  d: path("M6.343 4.929 L19.071 17.657 L17.657 19.071 L4.929 6.343 Z M12 11 L12 11 L12 13 L12 13 Z M4.929 17.657 L17.657 4.929 L19.071 6.343 L6.343 19.071 Z");
+}
+
+[role="banner"] .gb_ad[aria-expanded="true"] svg {
+  opacity: 0.45;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [role="navigation"] {
+    transition:
+      width 672ms var(--cg-spring-bouncy),
+      height 422ms var(--cg-spring-soft),
+      box-shadow 216ms ease,
+      background-color 132ms ease,
+      overflow 0s !important;
+    transition-behavior: allow-discrete !important;
+  }
+
+  [role="navigation"]:not(.bhZ) {
+    transition:
+      width 672ms var(--cg-spring-bouncy),
+      height 422ms var(--cg-spring-soft),
+      box-shadow 216ms ease,
+      background-color 132ms ease,
+      overflow 0s linear 450ms !important;
+    transition-behavior: allow-discrete !important;
+  }
+
+  [role="navigation"] .TO {
+    transition:
+      opacity 200ms ease,
+      box-shadow 150ms ease,
+      background-color 150ms ease;
+  }
+
+  [role="banner"] .gb_ad[role="button"] svg path {
+    transition: d 422ms var(--cg-spring-soft);
+  }
+
+  [role="banner"] .gb_ad[role="button"] svg {
+    transition: opacity 264ms ease;
+  }
+
+  /* Opening: entries appear top to bottom, 25ms apart (the delay applies
+     to the fade only, not to the hover shadow) */
+  [role="navigation"]:not(.bhZ) .aim:has(a[href$="#inbox"]) .TO { transition-delay: 75ms, 0s, 0s; }
+  [role="navigation"]:not(.bhZ) .aim:has(a[href$="#starred"]) .TO { transition-delay: 100ms, 0s, 0s; }
+  [role="navigation"]:not(.bhZ) .aim:has(a[href$="#sent"]) .TO { transition-delay: 125ms, 0s, 0s; }
+}
+
+/* Compose: floating pill with the word "Écrire", bottom right. Gmail's own
+   label ("Nouveau message") is hidden visually; screen readers still get it. */
+.T-I.T-I-KE.L3 {
+  position: fixed !important;
+  right: 32px !important;
+  bottom: 32px !important;
+  left: auto !important;
+  z-index: 10 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: var(--cg-compose-size) !important;
+  height: var(--cg-compose-size) !important;
+  padding: 0 22px !important;
+  border-radius: calc(var(--cg-compose-size) / 2) !important;
+  font-size: 0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  transition: box-shadow 150ms ease !important;
+}
+
+.T-I.T-I-KE.L3:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16), 0 8px 20px rgba(0, 0, 0, 0.10) !important;
+}
+
+/* Same type as the other buttons (14px, medium) */
+.T-I.T-I-KE.L3::before {
+  content: "\0000C9crire" !important; /* "Écrire": É as a 6-digit code, safe in any file encoding */
+  display: block !important;
+  position: static !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  background: none !important;
+  mask: none !important;
+  color: var(--cg-bg) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  filter: none !important;
+}
+
+/* Centered content column, with room under the header */
+[role="main"] {
+  max-width: var(--cg-content-width) !important;
+  margin: 0 auto !important;
+  padding-top: var(--cg-list-top) !important;
+}
+
+/* Sections: no divider under the heading, more air between them */
+[role="main"] .ae4 .Wg {
+  box-shadow: none !important;
+  height: auto !important;
+  padding-top: 0 !important;
+  margin-bottom: var(--cg-heading-gap) !important;
+}
+
+[role="main"] .ae4 ~ .ae4 {
+  margin-top: var(--cg-section-gap) !important;
+}
+
+/* Rows: no dividers. Gmail's rows are fixed-height flex boxes, so their
+   height comes from the row's own padding, not the cells' */
+tr.zA {
+  box-shadow: none !important;
+  padding-top: var(--cg-row-padding) !important;
+  padding-bottom: var(--cg-row-padding) !important;
+}
+
+/* Inset the row content so the hover background has room around the text */
+tr.zA > td.PF {
+  display: none !important;
+}
+
+tr.zA > td.yX {
+  padding-left: var(--cg-inset) !important;
+}
+
+tr.zA > td.xW {
+  padding-right: var(--cg-inset) !important;
+}
+
+tr.zA:hover {
+  background-color: var(--cg-hover) !important;
+  border-radius: 6px;
+}
+
+/* Fade at the bottom of the inbox: older read messages dissolve into the
+   page background. The curve stays light for most of the band and only
+   turns solid at the very bottom, so more messages stay readable.
+   Inbox list only (an open email is never covered), and clicks pass
+   through it. */
+body:has([role="main"] .ae4 ~ .ae4)::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  height: var(--cg-fade-height);
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--cg-bg) 30%, transparent) 40%,
+    color-mix(in srgb, var(--cg-bg) 62%, transparent) 65%,
+    color-mix(in srgb, var(--cg-bg) 88%, transparent) 85%,
+    var(--cg-bg) 100%
+  );
+}
+
+/* Progressive blur under the fade: two blur layers that each appear
+   gradually, a light one starting higher and a stronger one near the bottom,
+   so the oldest messages get softer the lower they sit and your attention
+   stays on the first ones. Same band as the fade; sits just under it (3). */
+html:has([role="main"] .ae4 ~ .ae4)::before,
+html:has([role="main"] .ae4 ~ .ae4)::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  height: var(--cg-fade-height);
+  pointer-events: none;
+}
+
+html:has([role="main"] .ae4 ~ .ae4)::before {
+  backdrop-filter: blur(1.5px);
+  mask-image: linear-gradient(to bottom, transparent 12%, black 55%);
+}
+
+html:has([role="main"] .ae4 ~ .ae4)::after {
+  backdrop-filter: blur(6px);
+  mask-image: linear-gradient(to bottom, transparent 45%, black 95%);
+}
+
+/* Section headings ("Non lus", "Autres messages"): a step above the rows
+   (17px vs 14px) and semibold */
+[role="main"] h3.Wr {
+  height: auto !important;
+  line-height: 24px !important;
+  color: var(--cg-text) !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  margin-left: 0 !important;
+  padding-left: var(--cg-inset) !important;
+  justify-content: flex-start !important; /* Gmail centers it, which shifts short headings */
+}
+
+/* Unread dot and count after "Non lus" (added by content.js). The only
+   color in the interface, and it disappears when nothing is unread. */
+/* Heading, count and dot share one baseline (Gmail centers them by default,
+   which lifts the smaller count above the heading's text line) */
+[role="main"] h3.Wr {
+  align-items: baseline !important;
+}
+
+[role="main"] h3.Wr .cg-unread {
+  display: inline-flex;
+  align-items: baseline;
+  /* Same space on both sides of the dot. Measured on the letter shapes:
+     "s" and most digits carry under 0.5px of built-in side space, so equal
+     values read as equal gaps */
+  gap: var(--cg-unread-gap);
+  margin-left: var(--cg-unread-gap);
+  color: var(--cg-text-muted);
+  font-size: 14px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+[role="main"] h3.Wr .cg-unread::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  /* An empty box sits on the baseline; lift it so its center lands at half
+     the digit's height (Inter digits are ~9.4px tall at 14px) */
+  transform: translateY(-1px);
+  border-radius: 50%;
+  background-color: var(--cg-accent);
+}
+
+/* More vivid orange on wide-gamut screens (like Mac displays) */
+@supports (color: color(display-p3 1 1 1)) {
+  :root {
+    --cg-accent: color(display-p3 0.99 0.4 0.02);
+  }
+}
+
+/* Collapse arrow before each heading (clicking the heading still collapses) */
+[role="main"] h3.Wr img.Wp {
+  display: none !important;
+}
+
+/* ---------- Compose as a modal ---------- */
+
+/* Gmail's bottom dock holds compose windows. Lift it above the header (6),
+   the menu (5) and the bottom fade (4), and put the blurred backdrop (7)
+   just under it. */
+.dw {
+  z-index: 8 !important;
+}
+
+body:has(.dw .Hd[role="dialog"])::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 7;
+  background-color: color-mix(in srgb, var(--cg-bg) 30%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+/* The compose window leaves the dock and takes over the whole screen: a
+   quiet, immersive writing space with nothing else visible.
+   The message gets the height left once the top space, recipients and
+   subject rows (40px + 42px at 17px text) and the bottom area are placed. The bottom area is the
+   tools row, plus the formatting toolbar (56px) when "Aa" is on. */
+.dw .Hd[role="dialog"] {
+  --cg-compose-footer: var(--cg-tools-row);
+  --cg-editor-height: calc(100vh - var(--cg-compose-top) - 82px - var(--cg-compose-footer));
+
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: 0; /* not !important, so the animation can round it */
+  background-color: var(--cg-bg) !important;
+  box-shadow: none !important;
+}
+
+.dw .Hd[role="dialog"]:has(.aDj [aria-pressed="true"]) {
+  --cg-compose-footer: calc(var(--cg-tools-row) + 56px);
+}
+
+/* Everything you write sits in one centered column */
+.dw .Hd[role="dialog"] .aoI {
+  max-width: var(--cg-compose-column) !important;
+  margin: 0 auto !important;
+  padding-top: var(--cg-compose-top) !important;
+}
+
+/* The message area fills the rest of the screen height (Gmail fixes it at
+   about 436px in three places) */
+.dw .Hd[role="dialog"] .GP {
+  height: var(--cg-editor-height) !important;
+  min-height: var(--cg-editor-height) !important;
+  max-height: none !important;
+}
+
+.dw .Hd[role="dialog"] .GP .qz {
+  max-height: var(--cg-editor-height) !important;
+}
+
+.dw .Hd[role="dialog"] .Am.editable {
+  min-height: calc(var(--cg-editor-height) - 76px) !important;
+}
+
+/* Title bar: page background instead of Gmail's light blue, corners
+   matching the sheet, and only the close button (minimize and full screen
+   make no sense for a modal) */
+/* Title bar: no visible title, takes no space, and can't be clicked (a
+   click on it would minimize the window). Only the close button remains. */
+.dw .Hd[role="dialog"] .aXJ {
+  height: 0 !important;
+  overflow: visible !important;
+  pointer-events: none !important;
+}
+
+.dw .Hd[role="dialog"] .aXJ .l.m {
+  background-color: transparent !important;
+  border-radius: 0 !important;
+}
+
+.dw .Hd[role="dialog"] .aYF {
+  display: none !important;
+}
+
+.dw .Hd[role="dialog"] .aXJ button:not(:last-child) {
+  display: none !important;
+}
+
+/* Close: same size as the hamburger (48px button, 24px icon), top-right
+   corner, with a permanent soft background so it's always easy to find */
+.dw .Hd[role="dialog"] .aXJ button:last-child {
+  position: fixed !important;
+  top: 24px !important;
+  right: 24px !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  background-color: var(--cg-active) !important;
+  pointer-events: auto !important;
+  transition: background-color 150ms ease;
+}
+
+.dw .Hd[role="dialog"] .aXJ button:last-child:hover {
+  background-color: var(--cg-hairline) !important;
+}
+
+/* Gmail wraps the icon in a 16px box; pin it to the circle's center instead */
+.dw .Hd[role="dialog"] .aXJ button:last-child svg {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 24px !important;
+  height: 24px !important;
+  margin: auto !important;
+}
+
+/* Text: same sizes and colors as the inbox. Recipients and subject read as
+   headings, like "Non lus" and "Autres messages" (17px, semibold); the
+   message itself is body text (14px, regular). Typed text in the primary
+   color, labels and placeholders in the secondary grey. */
+.dw .Hd[role="dialog"] input.agP,
+.dw .Hd[role="dialog"] input.aoT {
+  color: var(--cg-text) !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+}
+
+.dw .Hd[role="dialog"] .Am.editable {
+  color: var(--cg-text) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+/* "À" label, sized like the recipients it introduces */
+.dw .Hd[role="dialog"] .gO.aQY {
+  color: var(--cg-text-muted) !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+}
+
+.dw .Hd[role="dialog"] input.agP::placeholder,
+.dw .Hd[role="dialog"] input.aoT::placeholder {
+  color: var(--cg-text-muted) !important;
+}
+
+.dw .Hd[role="dialog"] .aB.gQ {
+  color: var(--cg-text-muted) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+.dw .Hd[role="dialog"] .J-Z-M-I-Jm {
+  color: var(--cg-text-subtle) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+/* Tool icons (formatting toolbar and tools row) are images in Gmail's dark
+   grey. Shown at 60% they land around #8e8f8d, a light grey; they come back
+   to full strength on hover or when switched on. */
+.dw .Hd[role="dialog"] .aDj .J-Z-I,
+.dw .Hd[role="dialog"] .aDj .J-Z-M-I,
+.dw .Hd[role="dialog"] .aDj .J-JN-M-I {
+  opacity: 0.6;
+  transition: opacity 150ms ease, background-color 150ms ease;
+}
+
+.dw .Hd[role="dialog"] .aDj .J-Z-I:hover,
+.dw .Hd[role="dialog"] .aDj .J-Z-M-I:hover,
+.dw .Hd[role="dialog"] .aDj .J-JN-M-I:hover,
+.dw .Hd[role="dialog"] .aDj [aria-pressed="true"] {
+  opacity: 1;
+}
+
+/* Switched-on tools, like "Aa" when the formatting toolbar is open: no
+   background (Gmail paints them light blue), just the icon at full strength.
+   Gmail marks them with aria-pressed. */
+.dw .Hd[role="dialog"] .aDj [aria-pressed="true"],
+.dw .Hd[role="dialog"] .aDj [aria-pressed="true"]::before,
+.dw .Hd[role="dialog"] .aDj [aria-pressed="true"] * {
+  background-color: transparent !important;
+}
+
+.dw .Hd[role="dialog"] .T-I.aoO {
+  font-size: 15px !important;
+  font-weight: 500 !important;
+}
+
+/* Field dividers in the warm grey instead of Gmail's blue-grey */
+.dw .Hd[role="dialog"] .fX.aiL,
+.dw .Hd[role="dialog"] .aoD.az6 {
+  border-bottom-color: var(--cg-hairline) !important;
+}
+
+/* Send and its schedule arrow: one orange pill, like the compose button,
+   with a faint divider between the two halves */
+.dw .Hd[role="dialog"] .T-I.aoO,
+.dw .Hd[role="dialog"] .T-I.hG {
+  background-color: var(--cg-accent) !important;
+  color: var(--cg-bg) !important;
+  box-shadow: none !important;
+}
+
+.dw .Hd[role="dialog"] .T-I.hG {
+  border-left: 1px solid color-mix(in srgb, var(--cg-bg) 35%, transparent) !important;
+}
+
+/* Bottom area: the formatting toolbar (only when "Aa" is on), then one
+   horizontal row with the tools on the left and Send at the right end.
+   The formatting toolbar, which Gmail floats above the area, joins the flow. */
+.dw .Hd[role="dialog"] .btC {
+  align-items: center !important;
+  box-sizing: border-box !important;
+  height: var(--cg-tools-row) !important;
+  padding-top: 10px !important; /* Gmail's own padding made the row 92px */
+  padding-bottom: 10px !important;
+}
+
+.dw .Hd[role="dialog"] .btC > td.gU.Up {
+  order: 99;
+  flex: 1 1 auto !important; /* Send takes the rest of the row... */
+  margin-left: var(--cg-send-gap) !important; /* ...after a fixed gap from the tools */
+  position: relative;
+  z-index: 1; /* above the toolbars, so its glow is never cut */
+  padding: 0 !important;
+}
+
+.dw .Hd[role="dialog"] .aDl .Ur {
+  position: static !important;
+}
+
+/* Send: pill filling the end of the row, flat at rest. On hover it glows: an orange halo
+   eases in, then breathes slowly while the pointer stays. The schedule
+   arrow stays attached on the right. */
+.dw .Hd[role="dialog"] .btC > td.gU.Up .btA,
+.dw .Hd[role="dialog"] .dC {
+  display: flex !important;
+  width: 100% !important;
+}
+
+.dw .Hd[role="dialog"] .dC {
+  border-radius: 22px;
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow 400ms var(--cg-ease-sheet);
+}
+
+.dw .Hd[role="dialog"] .dC:hover {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--cg-accent) 20%, transparent),
+    0 6px 24px color-mix(in srgb, var(--cg-accent) 40%, transparent),
+    0 0 48px color-mix(in srgb, var(--cg-accent) 22%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dw .Hd[role="dialog"] .dC:hover {
+    animation: cg-send-glow 2.4s ease-in-out 400ms infinite alternate;
+  }
+}
+
+@keyframes cg-send-glow {
+  to {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--cg-accent) 28%, transparent),
+      0 8px 32px color-mix(in srgb, var(--cg-accent) 52%, transparent),
+      0 0 72px color-mix(in srgb, var(--cg-accent) 32%, transparent);
+  }
+}
+
+.dw .Hd[role="dialog"] .T-I.aoO,
+.dw .Hd[role="dialog"] .T-I.hG {
+  height: 44px !important;
+}
+
+.dw .Hd[role="dialog"] .T-I.aoO {
+  flex: 1 1 auto !important;
+  max-width: none !important; /* Gmail caps it at 104px */
+  padding: 0 28px !important;
+  border-radius: 22px 0 0 22px !important;
+}
+
+/* Tools row: keep the trash next to the other tools (Gmail pushes it to
+   the far right) */
+.dw .Hd[role="dialog"] .btC > td.a0z {
+  margin-left: 0 !important;
+}
+
+.dw .Hd[role="dialog"] .T-I.hG {
+  border-radius: 0 22px 22px 0 !important;
+}
+
+/* Bottom bar (send row and formatting toolbar): Gmail pins it with fixed
+   positioning at the old docked window's coordinates, which pushed it right
+   and cut it off. Let it flow at the bottom of the sheet instead. */
+.dw .Hd[role="dialog"] .aDj {
+  position: relative !important;
+  inset: auto !important;
+  width: auto !important;
+  background-color: var(--cg-bg) !important;
+}
+
+/* Formatting toolbar: lifted with a soft shadow instead of a blue fill */
+.dw .Hd[role="dialog"] .aX .J-Z {
+  background-color: var(--cg-bg) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Opening motion, one gesture: the sheet slides up from below the screen
+   edge while the inbox behind it softens, both starting together on the
+   same no-bounce curve. Its top corners start rounded and square off as
+   it lands, so it reads as taking over the screen. The blur runs a little
+   longer than the sheet, so it keeps settling gently after the sheet has
+   landed. No bounce, no staggered contents: the sheet arrives as one piece.
+
+   Closing: Gmail removes the window instantly, so content.js leaves a
+   non-interactive copy (.cg-ghost) in its place. The copy slides back down,
+   a bit quicker than it came up, while the blur fades out, unless another
+   compose window is already open. */
+@media (prefers-reduced-motion: no-preference) {
+  body:has(.dw .Hd[role="dialog"])::before {
+    animation: cg-backdrop-in 700ms var(--cg-ease-sheet) both;
+  }
+
+  .dw .Hd[role="dialog"] {
+    animation: cg-sheet-rise 500ms var(--cg-ease-sheet) both;
+  }
+
+  .dw.cg-ghost .Hd[role="dialog"] {
+    animation: cg-sheet-fall 380ms var(--cg-ease-sheet) forwards;
+  }
+
+  body:has(.dw.cg-ghost .Hd[role="dialog"]):not(:has(.dw:not(.cg-ghost) .Hd[role="dialog"]))::before {
+    animation: cg-backdrop-out 450ms var(--cg-ease-sheet) forwards;
+  }
+}
+
+.dw.cg-ghost {
+  pointer-events: none;
+}
+
+@keyframes cg-backdrop-in {
+  from {
+    background-color: transparent;
+    backdrop-filter: blur(0);
+  }
+}
+
+@keyframes cg-sheet-rise {
+  from {
+    transform: translateY(100%);
+    border-radius: 24px 24px 0 0;
+  }
+}
+
+@keyframes cg-sheet-fall {
+  to {
+    transform: translateY(100%);
+    border-radius: 24px 24px 0 0;
+  }
+}
+
+@keyframes cg-backdrop-out {
+  to {
+    background-color: transparent;
+    backdrop-filter: blur(0);
+  }
+}
+
+/* ---------- Reading an email ---------- */
+
+/* Toolbar: drop the right side (message count, previous/next arrows,
+   input tools) */
+[gh="tm"] .adF {
+  display: none !important;
+}
+
+/* The remaining buttons (archive, spam, delete, mark as unread, move, more)
+   sit on the right of the column, on the same line as the subject and the
+   hamburger. Gmail keeps the toolbar in a strip above the scrolling email:
+   that strip collapses, the toolbar is pinned over the column (centered on
+   the hamburger's line, last icon above the star), and the email moves up
+   so the subject lands on the same line. The toolbar's empty area lets
+   clicks through to the email; only the buttons catch them.
+   Layer 6, drawn after Gmail's header, so the back arrow inside it stays
+   on top. */
+body:has([role="main"] h2.hP) .aeH {
+  height: 0 !important;
+  overflow: visible !important;
+}
+
+body:has([role="main"] h2.hP) [gh="tm"] {
+  position: fixed !important;
+  z-index: 6 !important;
+  top: calc(var(--cg-header-top) + var(--cg-header-row)) !important;
+  left: calc((100vw - var(--cg-scrollbar) - var(--cg-content-width)) / 2) !important;
+  box-sizing: border-box !important;
+  width: var(--cg-content-width) !important;
+  height: calc(48px + var(--cg-hamburger-top) - var(--cg-header-top) - var(--cg-header-row)) !important;
+  padding: calc(var(--cg-hamburger-top) - var(--cg-header-top) - var(--cg-header-row)) 6px 0 0 !important;
+  justify-content: flex-end !important;
+  background: transparent !important;
+  pointer-events: none !important;
+}
+
+body:has([role="main"] h2.hP) [gh="tm"] .iH {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+body:has([role="main"] h2.hP) [gh="tm"] .T-I {
+  pointer-events: auto !important;
+}
+
+/* Band behind the toolbar while scrolling: at the top of the email it's
+   invisible (subject and icons share their line); as soon as you scroll, an
+   off-white band with a soft lower edge fades in over the first 40px of
+   scroll, so the email slides under it instead of colliding with the icons.
+   Driven by the scroll position itself (CSS scroll-driven animation): the
+   email's scroll area publishes its scroll as "--cg-thread", made visible
+   page-wide so the toolbar, which sits outside it, can follow it. */
+body {
+  timeline-scope: --cg-thread;
+}
+
+.Tm.aeJ {
+  scroll-timeline: --cg-thread y;
+}
+
+body:has([role="main"] h2.hP) [gh="tm"]::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 calc(-1 * var(--cg-band-fade)) 0;
+  z-index: -1;
+  background: linear-gradient(
+    to bottom,
+    var(--cg-bg) calc(100% - var(--cg-band-fade)),
+    transparent 100%
+  );
+  opacity: 0;
+  animation: cg-band-in linear both;
+  animation-timeline: --cg-thread;
+  animation-range: 0px 40px;
+}
+
+@keyframes cg-band-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Less space above the email, so the subject's center meets the line */
+body:has([role="main"] h2.hP) [role="main"] {
+  padding-top: 10px !important;
+}
+
+/* Back arrow: styled like the compose window's close button (48px circle,
+   soft grey, 24px icon, 24px from the top of the screen) and pinned on the
+   hamburger's vertical axis, above it */
+[gh="tm"] .T-I.lS {
+  position: fixed !important;
+  left: var(--cg-hamburger-left) !important;
+  top: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 48px !important;
+  height: 48px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background-color: var(--cg-active) !important;
+  box-shadow: none !important;
+  transition: background-color 150ms ease;
+}
+
+[gh="tm"] .T-I.lS:hover {
+  background-color: var(--cg-hairline) !important;
+}
+
+/* The arrow is drawn here rather than relying on Gmail's icon image, which
+   Gmail swaps or hides once the page is live. Shape: Material "arrow back"
+   (Apache 2.0), as a mask so its color comes from background-color. */
+[gh="tm"] .T-I.lS .ar6 {
+  display: none !important;
+}
+
+[gh="tm"] .T-I.lS::after {
+  content: "" !important;
+  display: block !important;
+  width: 24px !important;
+  height: 24px !important;
+  background-color: var(--cg-text) !important;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z'/%3E%3C/svg%3E") center / contain no-repeat !important;
+}
+
+/* Gmail's own hover ring would draw a second circle */
+[gh="tm"] .T-I.lS .asa {
+  display: none !important;
+}
+
+/* Subject line: no labels ("Boîte de réception", "Notifications"), no
+   print or new window buttons */
+[role="main"] .ahR,
+[role="main"] .bHJ {
+  display: none !important;
+}
+
+/* Message header: keep the time and the star, drop the reaction, reply and
+   more buttons (reply stays available under the message and with "r") */
+[role="main"] .gH.acX {
+  display: none !important;
+}
+
+/* "Se désabonner" in the accent orange */
+[role="main"] .Ca {
+  color: var(--cg-accent) !important;
+}
+
+/* "Répondre" and "Transférer" under the message: same type as the rest of
+   the interface (Inter, 14px, medium) in the inbox's secondary grey, a
+   hairline outline in our grey instead of Gmail's dark one, quiet icons
+   like the compose tools, and the soft hover grey */
+[role="main"] .ams {
+  color: var(--cg-text-muted) !important;
+  font-family: var(--cg-font) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  border-color: var(--cg-hairline) !important;
+  transition: background-color 150ms ease;
+}
+
+[role="main"] .ams:hover {
+  background-color: var(--cg-hover) !important;
+}
+
+[role="main"] .ams::before {
+  opacity: 0.6;
+}
+
+/* ---------- Monochrome ---------- */
+
+body,
+.wl,
+.Tm.aeJ,
+.bkK > .nH,
+[role="banner"],
+tr.zA {
+  background-color: var(--cg-bg) !important;
+}
+
+/* Search bar: soft grey at rest. When you click into it, it lifts: the
+   fill turns to the page background and a layered shadow (fine edge, close
+   shadow, wide soft shadow) replaces Gmail's blue-grey one. */
+[role="banner"] form[role="search"] {
+  background-color: var(--cg-active) !important;
+  box-shadow: 0 0 0 0 transparent !important;
+  transition-property: background-color, box-shadow !important;
+  transition-duration: 150ms !important;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1) !important;
+}
+
+[role="banner"] form[role="search"]:focus-within {
+  background-color: var(--cg-bg) !important;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Compose button: same orange as the unread dot */
+.T-I.T-I-KE.L3 {
+  background-color: var(--cg-accent) !important;
+}
+
+/* Selected item in the left navigation */
+.TO.nZ {
+  background-color: var(--cg-active) !important;
+}
+
+.TO.nZ a.J-Ke,
+.TO.nZ .bsU {
+  color: var(--cg-text) !important;
+}
+
+/* Selected rows */
+tr.zA.x7 {
+  background-color: var(--cg-active) !important;
+}
+
+/* Thin blue accent bars, such as the loading indicator */
+.yIGn2b {
+  background-color: var(--cg-text) !important;
+}
+
+/* ---------- Type ---------- */
+
+/* Inter for Gmail's interface.
+   Email bodies (.a3s) keep the sender's fonts, and icon fonts are left alone. */
+body,
+body *:not(.a3s *):not(.google-material-icons):not(.material-icons-extended):not([class*="material-symbols"]) {
+  font-family: var(--cg-font) !important;
+}
+
+body {
+  color: var(--cg-text);
+  font-feature-settings: "cv01", "ss03"; /* Inter alternate letterforms */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Rows: one size (14px). Sender and subject in primary text, regular when
+   read, medium when unread. */
+tr.zA .zF,
+tr.zA .yP,
+tr.zA .bog,
+tr.zA .bqe {
+  color: var(--cg-text) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+tr.zA.zE .zF,
+tr.zA.zE .yP,
+tr.zA.zE .bog,
+tr.zA.zE .bqe {
+  font-weight: 500 !important;
+}
+
+/* Snippet after the subject: secondary grey */
+tr.zA .y2 {
+  color: var(--cg-text-muted) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+/* Dates: secondary grey, aligned digits */
+tr.zA td.xW span {
+  color: var(--cg-text-muted) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  font-variant-numeric: tabular-nums;
+}
+
+tr.zA.zE td.xW span {
+  color: var(--cg-text) !important;
+  font-weight: 500 !important;
+}
