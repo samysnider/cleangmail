@@ -5,7 +5,7 @@
  * when Google ships an update. If something reappears, the selector below it
  * probably needs updating.
  *
- * Typography: Inter, few sizes, hierarchy from weight (650 headings, 500
+ * Typography: Inter, few sizes, hierarchy from weight (600 headings, 500
  * unread, 400 the rest). Inter loads as a variable font (400 to 700). Colors: a warm gray scale and one orange accent.
  */
 
@@ -511,17 +511,26 @@ html:has([role="main"] .ae4 ~ .ae4)::after {
 }
 
 /* Section headings ("Non lus", "Autres messages"): a step above the rows
-   (17px vs 14px) and between semibold and bold (650) */
+   (16px vs 14px) and semibold (600) */
 [role="main"] h3.Wr {
   height: auto !important;
   line-height: 24px !important;
   color: var(--cg-text) !important;
-  font-size: 17px !important;
-  font-weight: 650 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
   text-transform: none !important;
   margin-left: 0 !important;
   padding-left: var(--cg-inset) !important;
   justify-content: flex-start !important; /* Gmail centers it, which shifts short headings */
+}
+
+/* Gmail sets its own size and weight (16px, 500) on the inner elements that
+   hold the heading text, so they're targeted directly */
+[role="main"] h3.Wr .Wn,
+[role="main"] h3.Wr .qh {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 24px !important;
 }
 
 /* Unread dot and count after "Non lus" (added by content.js). The only
@@ -686,14 +695,14 @@ body:has(.dw .Hd[role="dialog"])::before {
 }
 
 /* Text: same sizes and colors as the inbox. Recipients and subject read as
-   headings, like "Non lus" and "Autres messages" (17px, 650); the
+   headings (17px, semibold, like "Non lus" and "Autres messages"); the
    message itself is body text (14px, regular). Typed text in the primary
    color, labels and placeholders in the secondary grey. */
 .dw .Hd[role="dialog"] input.agP,
 .dw .Hd[role="dialog"] input.aoT {
   color: var(--cg-text) !important;
   font-size: 17px !important;
-  font-weight: 650 !important;
+  font-weight: 600 !important;
 }
 
 .dw .Hd[role="dialog"] .Am.editable {
@@ -706,7 +715,7 @@ body:has(.dw .Hd[role="dialog"])::before {
 .dw .Hd[role="dialog"] .gO.aQY {
   color: var(--cg-text-muted) !important;
   font-size: 17px !important;
-  font-weight: 650 !important;
+  font-weight: 600 !important;
 }
 
 .dw .Hd[role="dialog"] input.agP::placeholder,
