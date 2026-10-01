@@ -5,11 +5,11 @@
  * when Google ships an update. If something reappears, the selector below it
  * probably needs updating.
  *
- * Typography: Inter, few sizes, hierarchy from weight (600 headings, 500
- * unread, 400 the rest). Colors: a warm gray scale and one orange accent.
+ * Typography: Inter, few sizes, hierarchy from weight (650 headings, 500
+ * unread, 400 the rest). Inter loads as a variable font (400 to 700). Colors: a warm gray scale and one orange accent.
  */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap");
 
 :root {
   --cg-bg: #fdfdfc;        /* every page background */
@@ -91,12 +91,6 @@
 /* Left navigation: the whole Labels section (heading and list) */
 [role="navigation"] .aAw,
 [role="navigation"] .aAw ~ .yJ {
-  display: none !important;
-}
-
-/* Inbox, second section ("Other messages"): read messages only. Unread ones
-   already appear in the first section. */
-[role="main"] .ae4 ~ .ae4 tr.zA.zE {
   display: none !important;
 }
 
@@ -517,13 +511,13 @@ html:has([role="main"] .ae4 ~ .ae4)::after {
 }
 
 /* Section headings ("Non lus", "Autres messages"): a step above the rows
-   (17px vs 14px) and semibold */
+   (17px vs 14px) and between semibold and bold (650) */
 [role="main"] h3.Wr {
   height: auto !important;
   line-height: 24px !important;
   color: var(--cg-text) !important;
   font-size: 17px !important;
-  font-weight: 600 !important;
+  font-weight: 650 !important;
   text-transform: none !important;
   margin-left: 0 !important;
   padding-left: var(--cg-inset) !important;
@@ -692,14 +686,14 @@ body:has(.dw .Hd[role="dialog"])::before {
 }
 
 /* Text: same sizes and colors as the inbox. Recipients and subject read as
-   headings, like "Non lus" and "Autres messages" (17px, semibold); the
+   headings, like "Non lus" and "Autres messages" (17px, 650); the
    message itself is body text (14px, regular). Typed text in the primary
    color, labels and placeholders in the secondary grey. */
 .dw .Hd[role="dialog"] input.agP,
 .dw .Hd[role="dialog"] input.aoT {
   color: var(--cg-text) !important;
   font-size: 17px !important;
-  font-weight: 600 !important;
+  font-weight: 650 !important;
 }
 
 .dw .Hd[role="dialog"] .Am.editable {
@@ -712,7 +706,7 @@ body:has(.dw .Hd[role="dialog"])::before {
 .dw .Hd[role="dialog"] .gO.aQY {
   color: var(--cg-text-muted) !important;
   font-size: 17px !important;
-  font-weight: 600 !important;
+  font-weight: 650 !important;
 }
 
 .dw .Hd[role="dialog"] input.agP::placeholder,
