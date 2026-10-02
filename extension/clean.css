@@ -43,14 +43,20 @@
   --cg-fade-height: 280px; /* bottom fade over the oldest messages */
   --cg-compose-column: 720px; /* compose: width of the centered writing column */
   --cg-compose-top: 64px;  /* compose: space above the recipients */
+  --cg-sheet-top: 25vh;    /* compose: the sheet stops a quarter down the window */
+  --cg-sheet-width: calc(var(--cg-compose-column) + 160px); /* compose: the writing column plus 80px on each side */
+  --cg-sheet-radius: 36px; /* compose: sheet's top corners (close button's 24px + 12px inset) */
+  --cg-sheet-inset: 12px;  /* compose: close button's distance from the sheet's corner */
   --cg-tools-row: 64px;    /* compose: the row with the tools and Send */
   --cg-send-gap: 32px;     /* compose: space between the last tool and Send */
   --cg-hairline: #e9e9e7;  /* compose field dividers, outlines */
-  /* Soft dawn tints, only for the new-email glow and shine */
-  --cg-aurora-lavender: #cfcdf3;
-  --cg-aurora-blue: #cddcf6;
-  --cg-aurora-peach: #fad7bd;
-  --cg-aurora-apricot: #f6b08a;
+  /* Pastel sunshine tints, only for the new-email edge light */
+  --cg-aurora-lemon: #f5e6ad;   /* pale lemon */
+  --cg-aurora-peach: #f8d3a8;   /* soft peach */
+  --cg-aurora-honey: #f1d49b;   /* honey cream */
+  --cg-aurora-butter: #f6e2a6;  /* butter */
+  --cg-aurora-apricot: #f2bc8c; /* warm apricot */
+  --cg-aurora-cream: #f8edcf;   /* pale cream, the light's start and end */
   /* Sheet curve: no bounce, quick start, long soft landing */
   --cg-ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
   --cg-ease-ui: cubic-bezier(0.2, 0, 0, 1); /* hovers, presses and other quick state changes */
@@ -569,33 +575,47 @@ html:has([role="main"] .ae4 ~ .ae4)::after {
   z-index: 8 !important;
 }
 
+/* The inbox behind is blurred and dimmed with a faint warm grey, so the
+   sheet (the same off-white) reads as a lighter surface in front of it */
 body:has(.dw .Hd[role="dialog"])::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 7;
-  background-color: color-mix(in srgb, var(--cg-bg) 30%, transparent);
+  background-color: color-mix(in srgb, var(--cg-text) 8%, transparent);
   backdrop-filter: blur(6px);
 }
 
-/* The compose window leaves the dock and takes over the whole screen: a
-   quiet, immersive writing space with nothing else visible.
+/* The compose window leaves the dock and becomes a sheet attached to the
+   bottom center of the window, as wide as the writing column plus a margin
+   (24px from the window's sides at most). It rises from the bottom edge and
+   stops a quarter down the window, with rounded top corners and a soft
+   shadow all around. The inbox stays in view above and beside it, blurred,
+   which gives the interface depth.
+   The sheet always carries a (no-op) transform, so the close button, pinned
+   with position: fixed, is placed against the sheet rather than the window,
+   during the rise as well as after it.
    The message gets the height left once the top space, recipients and
-   subject rows (40px + 42px at 17px text) and the bottom area are placed. The bottom area is the
-   tools row, plus the formatting toolbar (56px) when "Aa" is on. */
+   subject rows (40px + 42px at 17px text) and the bottom area are placed.
+   The bottom area is the tools row, plus the formatting toolbar (56px)
+   when "Aa" is on. */
 .dw .Hd[role="dialog"] {
   --cg-compose-footer: var(--cg-tools-row);
-  --cg-editor-height: calc(100vh - var(--cg-compose-top) - 82px - var(--cg-compose-footer));
+  --cg-editor-height: calc(100vh - var(--cg-sheet-top) - var(--cg-compose-top) - 82px - var(--cg-compose-footer));
 
   position: fixed !important;
-  inset: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  margin: 0 !important;
+  inset: var(--cg-sheet-top) 0 0 0 !important;
+  width: min(100vw - 48px, var(--cg-sheet-width)) !important;
+  height: calc(100vh - var(--cg-sheet-top)) !important;
+  margin: 0 auto !important; /* centered between left: 0 and right: 0 */
   overflow: hidden !important;
-  border-radius: 0; /* not !important, so the animation can round it */
+  transform: translateY(0);
+  border-radius: var(--cg-sheet-radius) var(--cg-sheet-radius) 0 0 !important;
   background-color: var(--cg-bg) !important;
-  box-shadow: none !important;
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.06),
+    0 0 8px rgba(0, 0, 0, 0.04),
+    0 0 48px rgba(0, 0, 0, 0.12) !important;
 }
 
 .dw .Hd[role="dialog"]:has(.aDj [aria-pressed="true"]) {
@@ -649,12 +669,13 @@ body:has(.dw .Hd[role="dialog"])::before {
   display: none !important;
 }
 
-/* Close: same size as the hamburger (48px button, 24px icon), top-right
-   corner, with a permanent soft background so it's always easy to find */
+/* Close: same size as the hamburger (48px button, 24px icon), in the
+   sheet's top-right corner (concentric with it), with a permanent soft
+   background so it's always easy to find */
 .dw .Hd[role="dialog"] .aXJ button:last-child {
   position: fixed !important;
-  top: 24px !important;
-  right: 24px !important;
+  top: var(--cg-sheet-inset) !important;
+  right: var(--cg-sheet-inset) !important;
   width: 48px !important;
   height: 48px !important;
   border-radius: 50% !important;
@@ -869,9 +890,8 @@ body:has(.dw .Hd[role="dialog"])::before {
 }
 
 /* Opening motion, one gesture: the sheet slides up from below the screen
-   edge while the inbox behind it softens, both starting together on the
-   same no-bounce curve. Its top corners start rounded and square off as
-   it lands, so it reads as taking over the screen. The blur runs a little
+   edge while the inbox behind it softens and dims, both starting together
+   on the same no-bounce curve. The blur runs a little
    longer than the sheet, so it keeps settling gently after the sheet has
    landed. No bounce, no staggered contents: the sheet arrives as one piece.
 
@@ -911,14 +931,12 @@ body:has(.dw .Hd[role="dialog"])::before {
 @keyframes cg-sheet-rise {
   from {
     transform: translateY(100%);
-    border-radius: 24px 24px 0 0;
   }
 }
 
 @keyframes cg-sheet-fall {
   to {
     transform: translateY(100%);
-    border-radius: 24px 24px 0 0;
   }
 }
 
@@ -1232,7 +1250,7 @@ tr.zA.zE td.xW span {
 
 /* New arrivals (attributes and element added by content.js). When a
    message lands, the other emails blur so the new one stands alone, and the
-   edges of the inbox fill with dawn colors, then everything settles back. */
+   bottom of the inbox fills with soft sunlight, then everything settles back. */
 
 /* The other emails blur and fade back while the new one stays sharp, set
    aside rather than erased. They come back more slowly than they leave. */
@@ -1248,29 +1266,25 @@ html[data-cg-arriving] [role="main"] tr.zA:not([data-cg-arrived]) {
   transition-duration: 400ms;
 }
 
-/* Edge light: soft dawn colors swell from the four edges, settle while each
-   one drifts on its own slow path, then dissolve as the list comes back
-   into focus. Ambient rather than
-   an effect: slow in, slow out, no sweeping highlight. It covers the whole
-   window but is masked to the edges, and blends (multiply) so whatever it
-   passes over stays readable, header and "Écrire" included. Inbox list
-   only. Each color sits on a layer a bit larger than the window, anchored
-   to its own corner, so it has room to wander. */
+/* Edge light: a small sunrise. The light comes from the bottom edge and
+   rises (the top edges catch it 0.7s later, at about half strength, and let
+   go of it first). Its color warms from pale cream to honey and apricot at
+   the peak, then cools back to cream as it dissolves, while the list comes
+   back into focus (FOCUS_MS). Seven seconds in all (SHINE_MS).
+   Four layers built by content.js: a pale and a warm one for the bottom,
+   the same for the top. The color shift is a crossfade between them, and
+   the rise is a slow move, so the graphics card only changes opacity and
+   position, never repaints the page. The whole is masked to the edges and
+   blends (multiply), so whatever it passes over stays readable, header and
+   "Écrire" included. Inbox list only. */
 .cg-shine {
   position: fixed;
   inset: 0;
   z-index: 7;
+  overflow: hidden;
   pointer-events: none;
-  opacity: 0;
+  isolation: isolate;
   mix-blend-mode: multiply;
-  background:
-    radial-gradient(55% 65% at 0% 0%, var(--cg-aurora-lavender), transparent 75%),
-    radial-gradient(55% 65% at 100% 0%, var(--cg-aurora-blue), transparent 75%),
-    radial-gradient(55% 70% at 0% 100%, var(--cg-aurora-lavender), transparent 75%),
-    radial-gradient(55% 50% at 50% 100%, var(--cg-aurora-peach), transparent 75%),
-    radial-gradient(55% 70% at 100% 100%, var(--cg-aurora-apricot), transparent 75%);
-  background-size: 130% 130%;
-  background-position: 0% 0%, 100% 0%, 0% 100%, 50% 100%, 100% 100%;
   mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 38%, black 78%);
 }
 
@@ -1279,30 +1293,102 @@ body:has(.dw .Hd[role="dialog"]) > .cg-shine {
   display: none;
 }
 
-/* SHINE_MS in content.js */
-.cg-shine[data-cg-shining] {
-  animation: cg-shine 7000ms linear;
+/* A bit larger than the window, so each layer has room to move */
+.cg-shine-layer {
+  position: absolute;
+  inset: -6%;
+  opacity: 0;
 }
 
-/* Swell (0 to 2s), settle in a single breath (2 to 3s), dissolve (3 to 7s).
-   The fade starts when the other emails come back (FOCUS_MS). */
-@keyframes cg-shine {
-  0% { opacity: 0; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
-  28.57% { opacity: 0.75; animation-timing-function: ease-in-out; }
-  42.86% { opacity: 0.65; animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1); }
+.cg-shine-layer[data-layer="bottom-pale"] {
+  background:
+    radial-gradient(50% 60% at 6% 94%, var(--cg-aurora-cream), transparent 75%),
+    radial-gradient(50% 45% at 50% 96%, var(--cg-aurora-lemon), transparent 75%),
+    radial-gradient(50% 60% at 94% 94%, var(--cg-aurora-cream), transparent 75%);
+}
+
+.cg-shine-layer[data-layer="bottom-warm"] {
+  background:
+    radial-gradient(50% 60% at 6% 94%, var(--cg-aurora-honey), transparent 75%),
+    radial-gradient(50% 45% at 50% 96%, var(--cg-aurora-butter), transparent 75%),
+    radial-gradient(50% 60% at 94% 94%, var(--cg-aurora-apricot), transparent 75%);
+}
+
+.cg-shine-layer[data-layer="top-pale"] {
+  background:
+    radial-gradient(50% 55% at 6% 6%, var(--cg-aurora-cream), transparent 75%),
+    radial-gradient(50% 55% at 94% 6%, var(--cg-aurora-lemon), transparent 75%);
+}
+
+.cg-shine-layer[data-layer="top-warm"] {
+  background:
+    radial-gradient(50% 55% at 6% 6%, var(--cg-aurora-lemon), transparent 75%),
+    radial-gradient(50% 55% at 94% 6%, var(--cg-aurora-peach), transparent 75%);
+}
+
+/* Timings in % of 7s: 0.6s = 8.57%, 1s = 14.29%, 2s = 28.57%, 3s = 42.86% */
+.cg-shine[data-cg-shining] .cg-shine-layer {
+  will-change: opacity, transform;
+  animation-duration: 7000ms;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+.cg-shine[data-cg-shining] [data-layer="bottom-pale"] { animation-name: cg-sun-bottom-pale; }
+.cg-shine[data-cg-shining] [data-layer="bottom-warm"] { animation-name: cg-sun-bottom-warm; }
+.cg-shine[data-cg-shining] [data-layer="top-pale"] { animation-name: cg-sun-top-pale; }
+.cg-shine[data-cg-shining] [data-layer="top-warm"] { animation-name: cg-sun-top-warm; }
+
+/* Bottom: pale first, warm at the peak (2s), pale again as it dissolves */
+@keyframes cg-sun-bottom-pale {
+  0% { opacity: 0; }
+  14.29% { opacity: 0.6; }
+  28.57%, 42.86% { opacity: 0.3; }
+  64.29% { opacity: 0.45; }
   100% { opacity: 0; }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .cg-shine[data-cg-shining] {
-    animation:
-      cg-shine 7000ms linear,
-      cg-shine-drift 7000ms ease-in-out;
-  }
+@keyframes cg-sun-bottom-warm {
+  0%, 8.57% { opacity: 0; }
+  28.57% { opacity: 0.85; }
+  42.86% { opacity: 0.75; }
+  71.43% { opacity: 0.2; }
+  100% { opacity: 0; }
 }
 
-@keyframes cg-shine-drift {
-  to { background-position: 25% 15%, 80% 20%, 20% 85%, 30% 100%, 75% 85%; }
+/* Top: catches the light 0.7s later, at about half strength, lets go first */
+@keyframes cg-sun-top-pale {
+  0%, 10% { opacity: 0; }
+  22.86% { opacity: 0.35; }
+  37.14% { opacity: 0.2; }
+  57.14% { opacity: 0.25; }
+  80%, 100% { opacity: 0; }
 }
+
+@keyframes cg-sun-top-warm {
+  0%, 17.14% { opacity: 0; }
+  37.14% { opacity: 0.4; }
+  50% { opacity: 0.3; }
+  80%, 100% { opacity: 0; }
+}
+
+/* The rise: the bottom light climbs a little, the top drifts sideways */
+@media (prefers-reduced-motion: no-preference) {
+  .cg-shine[data-cg-shining] [data-layer="bottom-pale"] { animation-name: cg-sun-bottom-pale, cg-sun-rise; }
+  .cg-shine[data-cg-shining] [data-layer="bottom-warm"] { animation-name: cg-sun-bottom-warm, cg-sun-rise; }
+  .cg-shine[data-cg-shining] [data-layer="top-pale"] { animation-name: cg-sun-top-pale, cg-sun-drift; }
+  .cg-shine[data-cg-shining] [data-layer="top-warm"] { animation-name: cg-sun-top-warm, cg-sun-drift; }
+}
+
+@keyframes cg-sun-rise {
+  from { transform: translateY(4%); }
+  to { transform: translate(1.5%, -2%); }
+}
+
+@keyframes cg-sun-drift {
+  from { transform: translateX(-2%); }
+  to { transform: translateX(2%); }
+}
+
 
 

@@ -60,9 +60,14 @@ function update() {
 // draws a new email, which would drop our marker
 const ARRIVED_ATTR = "data-cg-arrived";
 const FOCUS_MS = 3000; // other emails blurred until the edge light starts fading
-const SHINE_MS = 7000; // matches the cg-shine animation in clean.css
+const SHINE_MS = 7000; // matches the cg-sun animations in clean.css
 const SHINE_CLASS = "cg-shine";
 const SHINE_ATTR = "data-cg-shining";
+// After a light, the next arrivals within a minute only get the blur, so a
+// burst of emails doesn't light the window up again and again
+const SHINE_COOLDOWN_MS = 60000;
+const SHINE_LAYERS = ["bottom-pale", "bottom-warm", "top-pale", "top-warm"];
+let lastShine = -Infinity;
 const ARRIVING_ATTR = "data-cg-arriving"; // on <html>: blurs the other rows
 let shineTimer;
 let focusTimer;
@@ -99,17 +104,26 @@ function minutesAgo(text) {
   return (Date.now() - sent) / 60000;
 }
 
-// The shine lives in its own element, created the first time it's needed
+// The light lives in its own element (a pale and a warm layer for the bottom
+// and for the top), created the first time it's needed
 function shine() {
+  // Covers "already lit" too: restarting it would flash
+  if (Date.now() - lastShine < SHINE_COOLDOWN_MS) return;
+  lastShine = Date.now();
+
   let layer = document.querySelector(`.${SHINE_CLASS}`);
   if (!layer) {
     layer = document.createElement("div");
     layer.className = SHINE_CLASS;
     layer.setAttribute("aria-hidden", "true");
+    for (const name of SHINE_LAYERS) {
+      const part = document.createElement("div");
+      part.className = "cg-shine-layer";
+      part.dataset.layer = name;
+      layer.append(part);
+    }
     document.body.prepend(layer);
   }
-  // Already lit: let it play out rather than restart it, which would flash
-  if (layer.hasAttribute(SHINE_ATTR)) return;
   layer.setAttribute(SHINE_ATTR, "");
   clearTimeout(shineTimer);
   shineTimer = setTimeout(() => layer.removeAttribute(SHINE_ATTR), SHINE_MS);

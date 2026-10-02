@@ -14,14 +14,14 @@ It's a personal project, built to make Gmail feel calm and focused.
 - Hides the clutter: logo, help, settings, Gemini, upgrade button, apps grid, avatar, side panel, labels, checkboxes, stars, label chips, counters and footer.
 - A centered column with soft warm greys and Inter.
 - "Non lus" shows an orange dot with your unread count, and the dot disappears when there's nothing to read.
-- When a new email arrives, the other emails blur for a moment so it stands alone, and soft dawn colors swell from the edges of the window, then fade.
+- When a new email arrives, the other emails blur for a moment so it stands alone, and a soft pastel sunlight rises from the bottom of the window like a small sunrise, then fades.
 - "Autres messages" lists read emails only, softly blurring and fading into the page toward the bottom.
 
 **Menu**
 - The hamburger opens a small floating pill of icons (inbox, starred, sent) with a springy animation, and morphs into a close icon.
 
 **Writing**
-- The orange "Écrire" button opens a full-screen writing space that rises from the bottom while the inbox blurs away, then slides back down when you close or send.
+- The orange "Écrire" button opens a writing sheet that rises from the bottom center of the window and stops a quarter of the way down, while the inbox behind it blurs and dims. It slides back down when you close or send.
 - One centered column, quiet tool icons, and an orange "Envoyer" button that glows on hover.
 
 Animations turn themselves off when "Reduce motion" is enabled in macOS accessibility settings.
