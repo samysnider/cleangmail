@@ -7,7 +7,11 @@
 // 2. New arrivals in "Non lus": when a message lands, the other emails blur
 //    so it stands alone, and the edges of the inbox glow for a moment.
 //
-// 3. Closing animation for the compose sheet. Gmail removes the compose
+// 3. Emails marked as unread move to "Non lus". Gmail leaves them in
+//    "Autres messages" until the list is refreshed, so the script presses
+//    Gmail's (hidden) refresh button once for each.
+//
+// 4. Closing animation for the compose sheet. Gmail removes the compose
 //    window instantly (close, send, ⌘Enter, discard), so when it disappears
 //    we put a non-interactive copy in its place and let the CSS slide that
 //    copy down while the blur fades out, then remove it.
@@ -176,12 +180,44 @@ for (const type of ["wheel", "pointerdown", "keydown"]) {
   );
 }
 
+// ---------- Marked as unread ----------
+
+// Messages already moved up, so one that stays put (for instance with
+// another inbox type) never triggers a refresh twice
+const promoted = new Set();
+let refreshTimer;
+
+function refreshInbox() {
+  const button = document.querySelector('[role="main"] [act="20"]');
+  if (!button) return;
+  for (const type of ["mousedown", "mouseup", "click"]) {
+    button.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, view: window }));
+  }
+}
+
+function promoteMarkedUnread(sections) {
+  let found = false;
+  sections[1].querySelectorAll("tr.zA.zE").forEach((row) => {
+    const id = lastMessageId(row);
+    if (!id || promoted.has(id)) return;
+    promoted.add(id);
+    found = true;
+  });
+  if (!found) return;
+  // A short pause lets Gmail finish saving the change first
+  clearTimeout(refreshTimer);
+  refreshTimer = setTimeout(refreshInbox, 600);
+}
+
 function updateArrivals() {
   const sections = document.querySelectorAll('[role="main"] .ae4');
   // Only while the inbox is on screen, so what arrives while you're reading
   // an email or on another tab plays when you come back
-  if (sections.length < 2 || !sections[0].getClientRects().length) return;
+  // (Gmail may hide an empty "Non lus" section, so either one showing counts)
+  if (sections.length < 2 || ![...sections].some((section) => section.getClientRects().length)) return;
   if (document.hidden) return;
+
+  promoteMarkedUnread(sections);
 
   // Only the inbox's own rows: Gmail keeps other lists (like Sent) hidden in
   // the page, and an email to yourself lands there first

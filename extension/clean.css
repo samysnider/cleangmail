@@ -623,6 +623,16 @@ body:has(.dw .Hd[role="dialog"])::before {
   --cg-compose-footer: calc(var(--cg-tools-row) + 56px);
 }
 
+/* One surface: Gmail paints the message area white and the bottom area
+   (tools, formatting toolbar, Send row) a light grey, which showed as
+   mismatched bands on the sheet. Everything inside the sheet takes the
+   sheet's own color, except what needs its own fill: buttons (Send, the
+   close button), the formatting toolbar card, the recipient chips, and
+   Gmail's menus and suggestion lists. */
+.dw .Hd[role="dialog"] *:not(.T-I, .J-Z, button, [role="menu"], [role="menu"] *, [role="listbox"], [role="listbox"] *, .aoD *, .fX *) {
+  background-color: transparent !important;
+}
+
 /* Everything you write sits in one centered column */
 .dw .Hd[role="dialog"] .aoI {
   max-width: var(--cg-compose-column) !important;
