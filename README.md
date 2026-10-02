@@ -8,6 +8,24 @@ It's a personal project, built to make Gmail feel calm and focused.
 
 *Demo recreated with invented emails.*
 
+## Design direction
+
+Gmail is built to do everything at once. Gmail Zen is built for the two things you actually do there: reading and writing. Every choice follows from one idea: an inbox should feel like a quiet room, not a control panel.
+
+**Restraint first.** The starting point was removal, not decoration. Anything you don't use every day is gone: logos, counters, labels, checkboxes, side panels. What remains is a single centered column of email, with generous space around it. When in doubt, something was taken away rather than added.
+
+**A warm monochrome.** The palette is almost entirely neutral: an off-white page instead of pure white, near-black text, and greys with a slight warmth instead of Gmail's cool blue-greys. There's no blue anywhere. The result reads like paper rather than a screen.
+
+**One color, and it means something.** A single orange is the only saturated color in the interface, and it always signals the same thing: something new, or something to act on. The unread dot, the "Écrire" button, "Envoyer", "Se désabonner". It never decorates.
+
+**Hierarchy through type, not boxes.** Everything is set in Inter, with very few sizes. Section headings are only one step larger than the emails, and weight does the rest: unread senders are slightly bolder than read ones, dates use aligned figures. There are no dividers between emails; spacing alone groups them.
+
+**Depth through light.** Instead of lines and borders, the interface uses soft shadows lit from above, and blur. Older emails dissolve gradually into the page at the bottom of the inbox, so attention stays on the most recent ones. When you write, the inbox stays in view behind the writing sheet, blurred and slightly dimmed, so you keep your bearings without being distracted.
+
+**Motion with a purpose.** Frequent actions get quick, discreet feedback. Rarer moments get a gentler, more physical motion: the menu opens with a soft spring, the writing sheet rises from the bottom edge on a curve with no bounce and slides back down when you're done. Nothing moves for its own sake, and everything stays still when "Reduce motion" is turned on.
+
+**A small moment of light.** The only time other colors appear is when a new email arrives. The rest of the list goes quiet and slightly out of focus, so the new message stands alone, and a pastel sunlight in soft yellow, honey and apricot rises from the bottom of the window, warms, then fades away. It lasts a few seconds and leaves the interface exactly as calm as it found it.
+
 ## What it changes
 
 **Inbox**
@@ -21,7 +39,7 @@ It's a personal project, built to make Gmail feel calm and focused.
 - The hamburger opens a small floating pill of icons (inbox, starred, sent) with a springy animation, and morphs into a close icon.
 
 **Writing**
-- The orange "Écrire" button opens a writing sheet that rises from the bottom center of the window and stops a quarter of the way down, while the inbox behind it blurs and dims. It slides back down when you close or send.
+- The orange "Écrire" button opens a writing sheet that rises from the bottom center of the window and stops just under the header, while the inbox behind it blurs and dims. It slides back down when you close or send.
 - One centered column, quiet tool icons, and an orange "Envoyer" button that glows on hover.
 
 Animations turn themselves off when "Reduce motion" is enabled in macOS accessibility settings.

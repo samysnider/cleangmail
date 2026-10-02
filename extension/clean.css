@@ -43,7 +43,7 @@
   --cg-fade-height: 280px; /* bottom fade over the oldest messages */
   --cg-compose-column: 720px; /* compose: width of the centered writing column */
   --cg-compose-top: 64px;  /* compose: space above the recipients */
-  --cg-sheet-top: 25vh;    /* compose: the sheet stops a quarter down the window */
+  --cg-sheet-top: calc(var(--cg-header-top) + var(--cg-header-row) + var(--cg-list-top)); /* compose: the sheet stops where the list begins (level with "Non lus"), under the header */
   --cg-sheet-width: calc(var(--cg-compose-column) + 160px); /* compose: the writing column plus 80px on each side */
   --cg-sheet-radius: 36px; /* compose: sheet's top corners (close button's 24px + 12px inset) */
   --cg-sheet-inset: 12px;  /* compose: close button's distance from the sheet's corner */
@@ -589,8 +589,9 @@ body:has(.dw .Hd[role="dialog"])::before {
 /* The compose window leaves the dock and becomes a sheet attached to the
    bottom center of the window, as wide as the writing column plus a margin
    (24px from the window's sides at most). It rises from the bottom edge and
-   stops a quarter down the window, with rounded top corners and a soft
-   shadow all around. The inbox stays in view above and beside it, blurred,
+   stops where the list begins, so the header stays in view above it, with
+   rounded top corners and a shadow cast downward, lit from above like the
+   menu and "Écrire". The inbox stays in view above and beside it, blurred,
    which gives the interface depth.
    The sheet always carries a (no-op) transform, so the close button, pinned
    with position: fixed, is placed against the sheet rather than the window,
@@ -614,8 +615,8 @@ body:has(.dw .Hd[role="dialog"])::before {
   background-color: var(--cg-bg) !important;
   box-shadow:
     0 0 0 0.5px rgba(0, 0, 0, 0.06),
-    0 0 8px rgba(0, 0, 0, 0.04),
-    0 0 48px rgba(0, 0, 0, 0.12) !important;
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    0 16px 48px rgba(0, 0, 0, 0.12) !important;
 }
 
 .dw .Hd[role="dialog"]:has(.aDj [aria-pressed="true"]) {
