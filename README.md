@@ -12,7 +12,7 @@ It's a personal project, built to make Gmail feel calm and focused.
 
 Gmail Zen keeps only what you use to read and write email. One centered column, generous space, no dividers, no labels or counters. Hierarchy comes from type (Inter, few sizes) rather than boxes.
 
-The palette is warm and neutral: an off-white page, near-black text, warm greys and no blue. A single orange marks what's new or what to act on: the unread dot, "Écrire", "Envoyer", "Se désabonner".
+The palette is warm and neutral: an off-white page, near-black text, warm greys and no blue. A single orange marks what's new or what to act on: the unread dot, "Write", "Send", "Unsubscribe".
 
 Depth comes from soft shadows and blur instead of lines. Motion is quick for everyday actions and slower for rare moments, like the writing sheet rising or the pastel light that appears when a new email arrives.
 
@@ -21,16 +21,16 @@ Depth comes from soft shadows and blur instead of lines. Motion is quick for eve
 **Inbox**
 - Hides the clutter: logo, help, settings, Gemini, upgrade button, apps grid, avatar, side panel, labels, checkboxes, stars, label chips, counters and footer.
 - A centered column with soft warm greys and Inter.
-- "Non lus" shows an orange dot with your unread count, and the dot disappears when there's nothing to read.
+- "Unread" shows an orange dot with your unread count, and the dot disappears when there's nothing to read.
 - When a new email arrives, the other emails blur for a moment so it stands alone, and a soft pastel sunlight rises from the bottom of the window like a small sunrise, then fades.
-- "Autres messages" lists read emails only, softly blurring and fading into the page toward the bottom.
+- "Everything else" lists read emails only, softly blurring and fading into the page toward the bottom.
 
 **Menu**
 - The hamburger opens a small floating pill of icons (inbox, starred, sent) with a springy animation, and morphs into a close icon.
 
 **Writing**
-- The orange "Écrire" button opens a writing sheet that rises from the bottom center of the window and stops just under the header, while the inbox behind it blurs and dims. It slides back down when you close or send.
-- One centered column, quiet tool icons, and an orange "Envoyer" button that glows on hover.
+- The orange "Write" button opens a writing sheet that rises from the bottom center of the window and stops just under the header, while the inbox behind it blurs and dims. It slides back down when you close or send.
+- One centered column, quiet tool icons, and an orange "Send" button that glows on hover.
 
 Animations turn themselves off when "Reduce motion" is enabled in macOS accessibility settings.
 
@@ -53,7 +53,7 @@ Most of the look is controlled by variables at the top of [`extension/clean.css`
 | Variable | What it controls |
 |---|---|
 | `--cg-bg`, `--cg-text`, `--cg-text-muted` | Page background and text colors |
-| `--cg-accent` | The orange (unread dot, "Écrire" and "Envoyer" buttons) |
+| `--cg-accent` | The orange (unread dot, "Write" and "Send" buttons) |
 | `--cg-content-width` | Width of the inbox column |
 | `--cg-search-width` | Width of the search bar |
 | `--cg-row-padding` | Height of each email row |
@@ -63,7 +63,7 @@ Most of the look is controlled by variables at the top of [`extension/clean.css`
 ## How it works
 
 - [`extension/clean.css`](extension/clean.css) does almost everything: hiding, colors, type, layout and animations.
-- [`extension/content.js`](extension/content.js) handles the things CSS can't do alone: showing the unread count next to "Non lus", spotting new arrivals, and playing the closing animation of the compose window (Gmail removes it instantly, so the script slides a copy away in its place).
+- [`extension/content.js`](extension/content.js) handles the things CSS can't do alone: showing the unread count next to "Unread", spotting new arrivals, and playing the closing animation of the compose window (Gmail removes it instantly, so the script slides a copy away in its place).
 - No permissions, no network requests of its own (apart from loading the Inter font from Google Fonts), no data collected.
 
 ## Limits
