@@ -14,6 +14,7 @@ It's a personal project, built to make Gmail feel calm and focused.
 - Hides the clutter: logo, help, settings, Gemini, upgrade button, apps grid, avatar, side panel, labels, checkboxes, stars, label chips, counters and footer.
 - A centered column with soft warm greys and Inter.
 - "Non lus" shows an orange dot with your unread count, and the dot disappears when there's nothing to read.
+- When a new email arrives, the other emails blur for a moment so it stands alone, and soft dawn colors swell from the edges of the window, then fade.
 - "Autres messages" lists read emails only, softly blurring and fading into the page toward the bottom.
 
 **Menu**
@@ -54,7 +55,7 @@ Most of the look is controlled by variables at the top of [`extension/clean.css`
 ## How it works
 
 - [`extension/clean.css`](extension/clean.css) does almost everything: hiding, colors, type, layout and animations.
-- [`extension/content.js`](extension/content.js) handles the two things CSS can't do alone: showing the unread count next to "Non lus", and playing the closing animation of the compose window (Gmail removes it instantly, so the script slides a copy away in its place).
+- [`extension/content.js`](extension/content.js) handles the things CSS can't do alone: showing the unread count next to "Non lus", spotting new arrivals, and playing the closing animation of the compose window (Gmail removes it instantly, so the script slides a copy away in its place).
 - No permissions, no network requests of its own (apart from loading the Inter font from Google Fonts), no data collected.
 
 ## Limits
