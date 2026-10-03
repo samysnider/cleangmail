@@ -67,9 +67,9 @@ const FOCUS_MS = 3000; // other emails blurred until the edge light starts fadin
 const SHINE_MS = 7000; // matches the cg-sun animations in clean.css
 const SHINE_CLASS = "cg-shine";
 const SHINE_ATTR = "data-cg-shining";
-// After a light, the next arrivals within a minute only get the blur, so a
-// burst of emails doesn't light the window up again and again
-const SHINE_COOLDOWN_MS = 60000;
+// After a light, the next arrivals within 15 seconds only get the blur, so
+// a burst of emails doesn't light the window up again and again
+const SHINE_COOLDOWN_MS = 15000;
 const SHINE_LAYERS = ["bottom-pale", "bottom-warm", "top-pale", "top-warm"];
 let lastShine = -Infinity;
 const ARRIVING_ATTR = "data-cg-arriving"; // on <html>: blurs the other rows
