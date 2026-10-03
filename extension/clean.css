@@ -40,7 +40,7 @@
   --cg-row-padding: 8px;   /* above and below each email; rows are 20px of text + 2x this (Gmail default is 10px, so 40px rows) */
   --cg-heading-gap: 16px;  /* under section headings; with line heights, ~28px of visible space */
   --cg-section-gap: 48px;  /* between "Non lus" and "Autres messages" */
-  --cg-fade-height: 280px; /* bottom fade over the oldest messages */
+  --cg-fade-height: max(280px, 100vh - 560px); /* bottom fade over the oldest messages: starts about six read emails down, whatever the window height */
   --cg-compose-column: 720px; /* compose: width of the centered writing column */
   --cg-compose-top: 64px;  /* compose: space above the recipients */
   --cg-sheet-top: calc(var(--cg-header-top) + var(--cg-header-row) + var(--cg-list-top)); /* compose: the sheet stops where the list begins (level with "Non lus"), under the header */
@@ -449,8 +449,8 @@ tr.zA:hover {
 }
 
 /* Fade at the bottom of the inbox: older read messages dissolve into the
-   page background. The curve stays light for most of the band and only
-   turns solid at the very bottom, so more messages stay readable.
+   page background. The band starts about six read emails down, so only the
+   most recent ones stay fully clear; scrolling still brings older ones up.
    Inbox list only (an open email is never covered), and clicks pass
    through it. */
 body:has([role="main"] .ae4 ~ .ae4)::after {
@@ -465,9 +465,9 @@ body:has([role="main"] .ae4 ~ .ae4)::after {
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    color-mix(in srgb, var(--cg-bg) 30%, transparent) 40%,
-    color-mix(in srgb, var(--cg-bg) 62%, transparent) 65%,
-    color-mix(in srgb, var(--cg-bg) 88%, transparent) 85%,
+    color-mix(in srgb, var(--cg-bg) 40%, transparent) 25%,
+    color-mix(in srgb, var(--cg-bg) 72%, transparent) 50%,
+    color-mix(in srgb, var(--cg-bg) 92%, transparent) 75%,
     var(--cg-bg) 100%
   );
 }
@@ -490,12 +490,12 @@ html:has([role="main"] .ae4 ~ .ae4)::after {
 
 html:has([role="main"] .ae4 ~ .ae4)::before {
   backdrop-filter: blur(1.5px);
-  mask-image: linear-gradient(to bottom, transparent 12%, black 55%);
+  mask-image: linear-gradient(to bottom, transparent 5%, black 40%);
 }
 
 html:has([role="main"] .ae4 ~ .ae4)::after {
   backdrop-filter: blur(6px);
-  mask-image: linear-gradient(to bottom, transparent 45%, black 95%);
+  mask-image: linear-gradient(to bottom, transparent 30%, black 80%);
 }
 
 /* Section headings ("Non lus", "Autres messages"): a step above the rows
@@ -519,6 +519,36 @@ html:has([role="main"] .ae4 ~ .ae4)::after {
   font-size: 16px !important;
   font-weight: 550 !important;
   line-height: 24px !important;
+}
+
+/* Clicking a heading (Gmail makes them clickable) showed Gmail's focus
+   style: a grey fill and a 2px inner ring, drawn on a layer behind the
+   heading (::before) on hover, focus and click. That layer is switched off.
+   Keyboard focus keeps a quiet ring so you can still see where you are. */
+[role="main"] h3.Wr::before {
+  display: none !important;
+}
+
+[role="main"] h3.Wr,
+[role="main"] h3.Wr * {
+  outline: none !important;
+  border-color: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+[role="main"] h3.Wr:focus-visible,
+[role="main"] h3.Wr *:focus-visible {
+  border-radius: 6px !important;
+  box-shadow: 0 0 0 2px var(--cg-hairline) !important;
+}
+
+/* "Autres messages" steps back with its read emails: same size and weight,
+   secondary grey. "Non lus" stays the only dark heading. */
+[role="main"] .ae4 ~ .ae4 h3.Wr,
+[role="main"] .ae4 ~ .ae4 h3.Wr .Wn,
+[role="main"] .ae4 ~ .ae4 h3.Wr .qh {
+  color: var(--cg-text-muted) !important;
 }
 
 /* Unread dot and count after "Non lus" (added by content.js). The only
@@ -1244,6 +1274,24 @@ tr.zA .y2 {
   color: var(--cg-text-muted) !important;
   font-size: 14px !important;
   font-weight: 400 !important;
+}
+
+/* Read emails step back: sender and subject in the secondary grey, like
+   the dates, and no snippet (you've read it). The snippet comes back while
+   you hover the row. */
+tr.zA:not(.zE) .zF,
+tr.zA:not(.zE) .yP,
+tr.zA:not(.zE) .bog,
+tr.zA:not(.zE) .bqe {
+  color: var(--cg-text-muted) !important;
+}
+
+tr.zA:not(.zE) .y2 {
+  display: none !important;
+}
+
+tr.zA:not(.zE):hover .y2 {
+  display: inline !important;
 }
 
 /* Dates: secondary grey, aligned digits */
