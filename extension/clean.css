@@ -13,8 +13,8 @@
 
 :root {
   --cg-bg: #fdfdfc;        /* every page background */
-  --cg-hover: #f5f4f4;     /* row and button hover */
-  --cg-active: #f1f0ef;    /* search bar, selected nav item, selected rows */
+  --cg-hover: #f5f4f4;     /* row and button hover, search bar at rest */
+  --cg-active: #f1f0ef;    /* selected nav item, selected rows, round buttons */
   --cg-text-muted: #63635e; /* snippets, dates */
   --cg-text-subtle: #82827c; /* quiet labels in the compose tools */
   --cg-text: #21201c;      /* primary text */
@@ -23,6 +23,7 @@
   --cg-compose-size: 44px; /* compose button height; 44px is the minimum comfortable click target */
   --cg-radius: 8px;        /* fields and rows (search bar, email rows); buttons are fully round */
   --cg-search-width: 336px; /* fits the placeholder plus the space Gmail keeps for its clear button */
+  --cg-search-open-width: 480px; /* while you search: room for Gmail's suggestion chips */
   --cg-inset: 12px;        /* left edge of row text and section headings */
   --cg-content-width: 1080px;
   --cg-header-top: 24px;   /* space above the search bar */
@@ -544,11 +545,11 @@ html:has([role="main"] .ae4 ~ .ae4)::after {
 }
 
 /* "Autres messages" steps back with its read emails: same size and weight,
-   secondary grey. "Non lus" stays the only dark heading. */
+   in the lightest grey. "Non lus" stays the only dark heading. */
 [role="main"] .ae4 ~ .ae4 h3.Wr,
 [role="main"] .ae4 ~ .ae4 h3.Wr .Wn,
 [role="main"] .ae4 ~ .ae4 h3.Wr .qh {
-  color: var(--cg-text-muted) !important;
+  color: var(--cg-text-subtle) !important;
 }
 
 /* Unread dot and count after "Non lus" (added by content.js). The only
@@ -1195,7 +1196,7 @@ tr.zA {
    fill turns to the page background and a layered shadow (fine edge, close
    shadow, wide soft shadow) replaces Gmail's blue-grey one. */
 [role="banner"] form[role="search"] {
-  background-color: var(--cg-active) !important;
+  background-color: var(--cg-hover) !important;
   box-shadow: 0 0 0 0 transparent !important;
   transition-property: background-color, box-shadow !important;
   transition-duration: 150ms !important;
@@ -1208,6 +1209,272 @@ tr.zA {
     0 0 0 1px rgba(0, 0, 0, 0.04),
     0 1px 2px rgba(0, 0, 0, 0.06),
     0 8px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* While you search, the rest of the interface blurs and dims, the same
+   backdrop as the writing sheet, so only the search bar (and its
+   suggestions) stays sharp. The layer lives inside the header, which sits
+   above everything else (6), and covers the whole window; the search bar
+   is lifted above it. Clicks pass through, so clicking an email still
+   opens it. */
+[role="banner"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  background-color: color-mix(in srgb, var(--cg-text) 8%, transparent);
+  backdrop-filter: blur(6px);
+  transition: opacity 450ms var(--cg-ease-sheet), visibility 0s linear 450ms;
+}
+
+[role="banner"]:has(form[role="search"]:focus-within)::after,
+[role="banner"]:has(table.gssb_c:not([style*="display: none"]))::after {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 700ms var(--cg-ease-sheet), visibility 0s;
+}
+
+[role="banner"] form[role="search"] {
+  position: relative;
+  z-index: 1;
+  transition-property: background-color, box-shadow, max-width !important;
+}
+
+/* Search suggestions (Gmail's panel under the search bar). While it's open,
+   the bar widens so the panel's chips fit instead of being cut off, and the
+   panel takes the bar's own surface and greys. It stays wide as long as the
+   panel shows, so a click on a suggestion never lands on a shifting row. */
+[role="banner"] form[role="search"]:focus-within,
+[role="banner"] form[role="search"]:has(table.gssb_c:not([style*="display: none"])) {
+  max-width: var(--cg-search-open-width) !important;
+}
+
+/* Each panel row starts with an empty column; keep it at zero width so
+   the suggestions use the whole panel */
+[role="banner"] form[role="search"] td.gssb_f,
+[role="banner"] form[role="search"] td.gssb_n {
+  width: 0 !important;
+  padding: 0 !important;
+}
+
+/* Gmail opens the panel with an empty 24px spacer row, which left a gap
+   under the text you type */
+[role="banner"] form[role="search"] table.gssb_c > tbody > tr:first-child:not(:has([role="listbox"])) {
+  display: none !important;
+}
+
+/* Clear button (×): Gmail keeps it 44px from the right edge, room for the
+   advanced options button we hide. It now mirrors the search icon: its
+   glyph sits 19px from the bar's right edge, as the magnifying glass does
+   from the left edge (measured on the rendered glyphs). */
+[role="banner"] form[role="search"] button.gb_1e {
+  left: auto !important;
+  right: 7px !important;
+  width: 48px !important;
+}
+
+/* One surface: the panel's white rows take the bar's off-white (the
+   suggestion rows keep Gmail's own hover and selection) */
+[role="banner"] form[role="search"] table.gssb_c > tbody > tr,
+[role="banner"] form[role="search"] td.gssb_e,
+[role="banner"] form[role="search"] table.gssb_m {
+  background-color: transparent !important;
+}
+
+/* Dividers in our hairline grey instead of Gmail's */
+[role="banner"] form[role="search"] [role="listbox"],
+[role="banner"] form[role="search"] td.gssb_e {
+  border-color: var(--cg-hairline) !important;
+}
+
+/* Chips ("Contient une pièce jointe", "7 derniers jours"...): pills like
+   the reply buttons, hairline outline, 14px medium in the secondary grey */
+[role="banner"] form[role="search"] div[role="listbox"] > div > div {
+  border-color: var(--cg-hairline) !important;
+  border-radius: 999px !important;
+  background-color: transparent !important;
+  transition: background-color 150ms var(--cg-ease-ui);
+}
+
+[role="banner"] form[role="search"] div[role="listbox"] > div > div,
+[role="banner"] form[role="search"] div[role="listbox"] > div > div * {
+  color: var(--cg-text-muted) !important;
+  font-family: var(--cg-font) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+[role="banner"] form[role="search"] div[role="listbox"] > div > div:hover {
+  background-color: var(--cg-hover) !important;
+}
+
+/* What you type: primary text, placeholder in the secondary grey */
+[role="banner"] form[role="search"] input {
+  color: var(--cg-text) !important;
+  font-family: var(--cg-font) !important;
+}
+
+[role="banner"] form[role="search"] input::placeholder {
+  color: var(--cg-text-muted) !important;
+}
+
+/* Suggestion rows, read like the inbox: the subject in the secondary grey
+   with the matching words in primary text and medium weight (instead of
+   Gmail's bold black), the sender and the date as quiet 12px lines, and
+   Gmail's red label in grey too (orange is kept for what's new). */
+[role="banner"] form[role="search"] table.gssb_m * {
+  font-family: var(--cg-font) !important;
+}
+
+[role="banner"] form[role="search"] .asor_b {
+  color: var(--cg-text-muted) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+[role="banner"] form[role="search"] .asor_b b {
+  color: var(--cg-text) !important;
+  font-weight: 500 !important;
+}
+
+[role="banner"] form[role="search"] .asor_c,
+[role="banner"] form[role="search"] .asor_e,
+[role="banner"] form[role="search"] .asor_h1,
+[role="banner"] form[role="search"] .gsas_a {
+  color: var(--cg-text-muted) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+}
+
+[role="banner"] form[role="search"] .asor_c {
+  font-variant-numeric: tabular-nums;
+}
+
+/* "Tous les résultats de recherche pour…": a quiet primary line */
+[role="banner"] form[role="search"] .gsas-d {
+  color: var(--cg-text) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+/* No envelope icon in front of each email suggestion: the column it sat
+   in goes too, so the text starts at the row's left margin. The search
+   icon of the "Tous les résultats…" line stays, at the strength of the
+   other quiet tool icons. */
+[role="banner"] form[role="search"] td.asor_t0 {
+  display: none !important;
+}
+
+[role="banner"] form[role="search"] .gsoi {
+  opacity: 0.6 !important;
+}
+
+/* Hover and keyboard selection: Gmail marks the row (.gssb_i) with a flat
+   blue-grey fill and a 2px blue bar on its cell. Instead: the soft hover
+   grey across the full width, square, and a straight bar in our orange,
+   drawn inside the row so the text doesn't shift. */
+[role="banner"] form[role="search"] tr.gssb_i,
+[role="banner"] form[role="search"] td.gssb_a {
+  background-color: transparent !important;
+}
+
+[role="banner"] form[role="search"] tr.gssb_i > td.gssb_a {
+  border-left: none !important;
+}
+
+[role="banner"] form[role="search"] tr.gssb_i [role="option"] {
+  box-shadow: inset 2px 0 0 var(--cg-accent) !important;
+}
+
+[role="banner"] form[role="search"] table.gssb_m [role="option"] {
+  border-radius: 0 !important; /* square, so the orange bar stays straight */
+  transition: background-color 150ms var(--cg-ease-ui);
+}
+
+[role="banner"] form[role="search"] table.gssb_m [role="option"]:hover,
+[role="banner"] form[role="search"] tr.gssb_i [role="option"],
+[role="banner"] form[role="search"] table.gssb_m [role="option"][aria-selected="true"] {
+  background-color: var(--cg-hover) !important;
+}
+
+/* Same rhythm as an inbox row: 8px of air above and below the text, 12px
+   from the left edge, and entries that touch (Gmail left a gap between
+   them, so the hover grey read as separate cards) */
+[role="banner"] form[role="search"] td.gssb_a {
+  padding: 0 !important;
+}
+
+[role="banner"] form[role="search"] table.gssb_m [role="option"] {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  padding: var(--cg-row-padding) var(--cg-inset) !important;
+}
+
+[role="banner"] form[role="search"] table.gssb_m [role="option"] td {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Dates against the right margin: Gmail sizes each suggestion's inner
+   tables to a fixed width, which left the date floating mid-row. They now
+   span the row; the subject and sender take the room (and still end with
+   "…" when long), and the date column sits at the right edge. */
+[role="banner"] form[role="search"] table.gssb_m [role="option"] > table,
+[role="banner"] form[role="search"] table.gssb_m .gsar_b,
+[role="banner"] form[role="search"] table.gssb_m table.asor_a {
+  width: 100% !important;
+}
+
+/* The cell holding the date (and the paperclip when there's an attachment):
+   wide enough for "15 sept." plus the icon, whatever width Gmail sets on
+   it; the subject cell takes the rest */
+[role="banner"] form[role="search"] table.asor_a td:has(.asor_c) {
+  width: 96px !important;
+  min-width: 96px !important;
+  max-width: none !important;
+  overflow: visible !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+}
+
+[role="banner"] form[role="search"] table.asor_a td:has(.asor_b) {
+  width: auto !important;
+}
+
+/* Subject and sender take what the date leaves, ending with "…" */
+[role="banner"] form[role="search"] .asor_b,
+[role="banner"] form[role="search"] .asor_e {
+  width: auto !important;
+  max-width: calc(var(--cg-search-open-width) - 2 * var(--cg-inset) - 104px) !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Gmail boxes the date in a fixed 32px that cuts "15 sept." short: let it
+   take the width it needs inside its column */
+[role="banner"] form[role="search"] .asor_c {
+  display: inline-block !important;
+  width: auto !important;
+  min-width: max-content !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+  text-overflow: clip !important;
+  text-align: right !important;
+}
+
+/* "Tous les résultats…" line: its "Press ENTER" hint sat against the
+   panel's edge; it keeps the same 12px right margin as the dates, and the
+   search icon lines up with the suggestions' text on the left */
+[role="banner"] form[role="search"] .gsas_e {
+  right: var(--cg-inset) !important;
+}
+
+[role="banner"] form[role="search"] .gsoi_msra {
+  background-position: left center !important;
 }
 
 /* Compose button: same orange as the unread dot */
