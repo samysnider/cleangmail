@@ -1295,16 +1295,22 @@ tr.zA:not(.zE):hover .y2 {
   display: inline !important;
 }
 
-/* Dates: secondary grey, aligned digits */
+/* Dates: a step below the rows (12px), secondary grey, aligned digits */
 tr.zA td.xW span {
   color: var(--cg-text-muted) !important;
-  font-size: 14px !important;
+  font-size: 12px !important;
   font-weight: 400 !important;
   font-variant-numeric: tabular-nums;
 }
 
+/* Unread: darker */
 tr.zA.zE td.xW span {
   color: var(--cg-text) !important;
+}
+
+/* In "Non lus" (the first section), dates are medium like the senders;
+   in "Autres messages" they stay regular, like the snippet */
+[role="main"] .ae4:not(.ae4 ~ .ae4) tr.zA td.xW span {
   font-weight: 500 !important;
 }
 
