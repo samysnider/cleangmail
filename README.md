@@ -4,9 +4,11 @@ A quieter, monochrome Gmail. Gmail Zen is a small Chrome extension that restyles
 
 It's a personal project, built to make Gmail feel calm and focused.
 
-![Gmail Zen: the inbox, then writing and sending a message](media/demo.gif)
+![Before and after: Gmail's default inbox, then the same inbox with Gmail Zen](media/before-after.gif)
 
-*Demo recreated with invented emails.*
+![Gmail Zen: a new email arriving, the menu, reading, then writing and sending a message](media/demo.gif)
+
+*Both recreated with invented emails.*
 
 ## Design direction
 
