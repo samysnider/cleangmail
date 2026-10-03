@@ -9,7 +9,7 @@
  * unread, 400 the rest). Inter loads as a variable font (400 to 700). Colors: a warm gray scale and one orange accent.
  */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap"); /* variable: weight and optical size */
 
 :root {
   --cg-bg: #fdfdfc;        /* every page background */
@@ -499,7 +499,7 @@ html:has([role="main"] .ae4 ~ .ae4)::after {
 }
 
 /* Section headings ("Non lus", "Autres messages"): a step above the rows
-   (16px vs 14px) and semibold (600) */
+   (16px vs 14px), semibold (550) */
 [role="main"] h3.Wr {
   height: auto !important;
   line-height: 24px !important;
@@ -1247,6 +1247,7 @@ body *:not(.a3s *):not(.google-material-icons):not(.material-icons-extended):not
 body {
   color: var(--cg-text);
   font-feature-settings: "cv01", "ss03"; /* Inter alternate letterforms */
+  font-optical-sizing: auto; /* Inter adapts its shapes to each size */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
